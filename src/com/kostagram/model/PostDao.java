@@ -1,11 +1,6 @@
 package com.kostagram.model;
 
 import com.kostagram.db.ConnectionProvider;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,49 +24,21 @@ public class PostDao {
         return instance;
     }
 
-    //    // 포스트 추가 메서드
-//    public void addPost(Posts posts) throws SQLException {
-//        String sql = "INSERT INTO posts(user_id, post_content) VALUES(?, ?)";
-//
-//        try (Connection conn = ConnectionProvider.getConnection();
-//             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-//            pstmt.setString(1, posts.getUserId());
-//            pstmt.setString(2, posts.getContent());
-//            pstmt.executeUpdate();
-//        }
-//    }
+    // 포스트 추가 메서드
     public void addPost(Posts posts) throws SQLException {
-        String sql = "INSERT INTO posts(user_id, post_content, post_image) VALUES(?, ?, ?)";
+        String sql = "INSERT INTO POSTS(USER_ID, POST_CONTENT) VALUES(?, ?)";
 
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, posts.getUserId());
             pstmt.setString(2, posts.getContent());
-            pstmt.setString(3, posts.getImagePath());
             pstmt.executeUpdate();
-        }
-    }
-
-    // 포스트에 이미지를 추가하는 메서드
-    public void addPostWithImage(Posts posts, File imageFile) throws SQLException {
-        String sql = "INSERT INTO posts(user_id, post_content, post_image) VALUES(?, ?, ?)";
-
-        try (Connection conn = ConnectionProvider.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             FileInputStream fis = new FileInputStream(imageFile)) {
-
-            pstmt.setString(1, posts.getUserId());
-            pstmt.setString(2, posts.getContent());
-            pstmt.setBinaryStream(3, fis, (int) imageFile.length());
-            pstmt.executeUpdate();
-        } catch (IOException e) {
-            throw new SQLException("Failed to read the image file", e);
         }
     }
 
     // 모든 포스트를 가져오는 메서드
     public List<Posts> getPosts() {
-        String sql = "SELECT post_id, user_id, post_content, create_date FROM posts";
+        String sql = "SELECT POST_ID, USER_ID, POST_CONTENT, CREATE_DATE FROM POSTS";
         List<Posts> posts = new ArrayList<>();
 
         try (Connection conn = ConnectionProvider.getConnection();
@@ -80,10 +47,10 @@ public class PostDao {
 
             while (rs.next()) {
                 Posts post = new Posts();
-                post.setPostId(rs.getString("post_id"));
-                post.setUserId(rs.getString("user_id"));
-                post.setContent(rs.getString("post_content"));
-                post.setCreateDate(rs.getDate("create_date"));
+                post.setPostId(rs.getString("POST_ID"));
+                post.setUserId(rs.getString("USER_ID"));
+                post.setContent(rs.getString("POST_CONTENT"));
+                post.setCreateDate(rs.getDate("CREATE_DATE"));
                 posts.add(post);
             }
 
