@@ -30,17 +30,18 @@ public class UserDao {
     }
 
     // 회원 가입 메서드
-    public void addUser(Users userInfo) {
+    public int addUser(Users userInfo) {
         String sql = "INSERT INTO USERS(USER_EMAIL, USER_PASSWORD) VALUES(?,?)";
-
+        int re = -1;
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, userInfo.getEmail());
             pstmt.setString(2, userInfo.getPassword());
-            pstmt.executeUpdate();
+            re = pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("회원 가입 메서드에서 예외 발생: " + e.getMessage());
         }
+        return re;
     }
 
     // 이메일을 입력받아 해당 이메일의 사용자 정보를 반환하는 메서드
@@ -49,21 +50,21 @@ public class UserDao {
         String sql = "SELECT USER_ID, USER_EMAIL, USER_PASSWORD, CREATE_DATE FROM USERS WHERE USER_EMAIL = ?";
         Users users = null; // 결과를 저장할 users 객체 선언
 
-        try (Connection conn = ConnectionProvider.getConnection(); // 데이터베이스 연결 얻기
+        try (Connection conn = ConnectionProvider.getConnection();// 데이터베이스 연결 얻기
              PreparedStatement pstmt = conn.prepareStatement(sql)) { // SQL 문 준비
             pstmt.setString(1, email); // SQL 문에 이메일 값 설정
             ResultSet rs = pstmt.executeQuery(); // 쿼리 실행 및 결과 집합 얻기
 
             if (rs.next()) { // 결과 집합이 비어 있지 않은지 확인
                 users = new Users(); // users 객체 생성
-                users.setUserId(rs.getString("user_id")); // user_id 값을 Users 객체에 설정
-                users.setEmail(rs.getString("user_email")); // email 값을 Users 객체에 설정
-                users.setPassword(rs.getString("user_password")); // password 값을 Users 객체에 설정
-                users.setCreateDate(rs.getDate("create_date")); // create_date 값을 Users 객체에 설정
+                users.setUserId(rs.getString("USER_ID")); // user_id 값을 Users 객체에 설정
+                users.setEmail(rs.getString("USER_EMAIL")); // email 값을 Users 객체에 설정
+                users.setPassword(rs.getString("USER_PASSWORD")); // password 값을 Users 객체에 설정
+                users.setCreateDate(rs.getDate("CREATE_DATE")); // create_date 값을 Users 객체에 설정
             }
-            System.out.println("사용자 정보 출력: " + users.toString());
+//            System.out.println("사용자 정보 출력: " + users.toString());
         } catch (SQLException e) {
-            System.out.println("사용자 정보 반환 메서드에서 예외 발생: " + e.getMessage()); // 예외 발생 시 오류 메시지 출력
+            System.out.println("사용자 정보 반환 메서드에서 예외 발생: " + e); // 예외 발생 시 오류 메시지 출력
         }
         return users; // users 객체 반환 (결과가 없으면 null)
     }
