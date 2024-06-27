@@ -9,9 +9,11 @@ import java.awt.event.ActionListener;
 public class PostView extends JFrame {
     private JTextArea contentArea = new JTextArea(10, 30);
     private JButton postButton = new JButton("Post");
+    private FadeButton newImgBtn;
+    public JPanel leftPanel;
     public PostView() {
         setSize(1050, 750);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
         JPanel panel = new JPanel(new BorderLayout());
@@ -20,9 +22,11 @@ public class PostView extends JFrame {
         topPanel.setBackground(MainView.bgColor);
         topPanel.setPreferredSize(new Dimension(1050, 42));
         //게시글 내용 작성 패널
-        JPanel leftPanel = new JPanel();
+        leftPanel = new JPanel();
         leftPanel.setBackground(MainView.bgColor);
         leftPanel.setPreferredSize(new Dimension(710, 710));
+        newImgBtn = new FadeButton(new Color(0,150,247), new Color(0,92,192), Color.white, "컴퓨터에서 선택");
+        leftPanel.add(newImgBtn);
         String defaultImagePath = "./src/com/kostagram/image/";
         JLabel imageLabel = new JLabel(new ImageIcon(defaultImagePath+"test1.jpg"));
         imageLabel.setPreferredSize(new Dimension(710, 710));
@@ -43,7 +47,7 @@ public class PostView extends JFrame {
     public String getContent() {
         return contentArea.getText();
     }
-
+    public void addNewImgListener(ActionListener listener){ newImgBtn.addActionListener(listener);}
     public void addPostListener(ActionListener listener) {
         postButton.addActionListener(listener);
     }
@@ -52,3 +56,4 @@ public class PostView extends JFrame {
         SwingUtilities.invokeLater(PostView::new);
     }
 }
+

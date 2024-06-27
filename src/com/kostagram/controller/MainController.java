@@ -52,6 +52,7 @@ public class MainController {
         public void actionPerformed(ActionEvent e) {
             PostView postView = new PostView();
             PostController postController = new PostController(postView, userInfo, postDao);
+            mainView.dispose();
             postView.setVisible(true);
         }
     }

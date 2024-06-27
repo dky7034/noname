@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import com.kostagram.controller.LoginController;
 import com.kostagram.model.Users;
+import com.kostagram.view.PostView;
 
 public class MainView extends JFrame {
     private DefaultListModel<Post> listModel;
@@ -21,6 +22,7 @@ public class MainView extends JFrame {
     JButton add_panel_btn = createIconButton("add");
     JButton user_panel_btn = createIconButton("user");
     public static Users user;
+
     public MainView() {
         setTitle("Main");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,6 +39,7 @@ public class MainView extends JFrame {
         titleLabel.setFont(font);
         titleLabel.setForeground(Color.white);
         topPanel.add(titleLabel);
+
         topPanel.add(Box.createHorizontalGlue());
 
         // 리스트 모델 및 리스트
