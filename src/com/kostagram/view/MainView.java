@@ -3,6 +3,8 @@ package com.kostagram.view;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import com.kostagram.controller.LoginController;
+import com.kostagram.model.Users;
 
 public class MainView extends JFrame {
     private DefaultListModel<Post> listModel;
@@ -18,13 +20,14 @@ public class MainView extends JFrame {
     JButton search_page_btn = createIconButton("search");
     JButton add_panel_btn = createIconButton("add");
     JButton user_panel_btn = createIconButton("user");
+    public static Users user;
     public MainView() {
         setTitle("Main");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(470, 950);
+        setSize(475, 950);
         setResizable(false);
         setLocationRelativeTo(null);
-
+        user = LoginController.users;
         // 상단 패널
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
@@ -120,7 +123,7 @@ public class MainView extends JFrame {
             panel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 0));
 
             // 사용자 이름
-            JLabel userLabel = new JLabel(post.getUsername());
+            JLabel userLabel = new JLabel(user.getEmail());
             userLabel.setFont(font);
             userLabel.setForeground(fgColor);
             userLabel.setPreferredSize(new Dimension(450, 44));
