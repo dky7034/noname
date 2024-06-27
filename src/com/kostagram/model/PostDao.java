@@ -1,6 +1,11 @@
 package com.kostagram.model;
 
 import com.kostagram.db.ConnectionProvider;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +29,43 @@ public class PostDao {
         return instance;
     }
 
-    // 포스트 추가 메서드
+    //    // 포스트 추가 메서드
+//    public void addPost(Posts posts) throws SQLException {
+//        String sql = "INSERT INTO posts(user_id, post_content) VALUES(?, ?)";
+//
+//        try (Connection conn = ConnectionProvider.getConnection();
+//             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+//            pstmt.setString(1, posts.getUserId());
+//            pstmt.setString(2, posts.getContent());
+//            pstmt.executeUpdate();
+//        }
+//    }
     public void addPost(Posts posts) throws SQLException {
-        String sql = "INSERT INTO posts(user_id, post_content) VALUES(?, ?)";
+        String sql = "INSERT INTO posts(user_id, post_content, post_image) VALUES(?, ?, ?)";
 
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, posts.getUserId());
             pstmt.setString(2, posts.getContent());
+            pstmt.setString(3, posts.getImagePath());
             pstmt.executeUpdate();
+        }
+    }
+
+    // 포스트에 이미지를 추가하는 메서드
+    public void addPostWithImage(Posts posts, File imageFile) throws SQLException {
+        String sql = "INSERT INTO posts(user_id, post_content, post_image) VALUES(?, ?, ?)";
+
+        try (Connection conn = ConnectionProvider.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             FileInputStream fis = new FileInputStream(imageFile)) {
+
+            pstmt.setString(1, posts.getUserId());
+            pstmt.setString(2, posts.getContent());
+            pstmt.setBinaryStream(3, fis, (int) imageFile.length());
+            pstmt.executeUpdate();
+        } catch (IOException e) {
+            throw new SQLException("Failed to read the image file", e);
         }
     }
 

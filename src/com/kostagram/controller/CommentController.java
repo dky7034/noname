@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
 
+/*
+    댓글과 관련된 기능을 담당하는 컨트롤러
+ */
 public class CommentController {
     private CommentView commentView;
     private CommentDao commentDao;
