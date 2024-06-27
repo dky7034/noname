@@ -22,7 +22,7 @@ public class LoginView extends JFrame {
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setSize(450, 920);
+        setSize(470, 920);
         setLocationRelativeTo(null);
 
         // 로그인 화면 구성

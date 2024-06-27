@@ -16,11 +16,10 @@ import java.util.regex.Pattern;
 public class LoginController {
     private LoginView loginView;
     private UserDao userDao;
-
+    public static Users users;
     public LoginController(LoginView loginView, UserDao userDao) {
         this.loginView = loginView;
         this.userDao = userDao;
-
         this.loginView.addLoginListener(new LoginListener());
         this.loginView.addRegisterListener(new RegisterListener());
     }
@@ -33,7 +32,7 @@ public class LoginController {
 
             String password = new String(loginView.getPassword());
 
-            Users users = userDao.getUserByEmail(email);
+            users = userDao.getUserByEmail(email);
             System.out.println(users);
 
             if(Pattern.matches(pattern, email)) {

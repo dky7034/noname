@@ -1,57 +1,54 @@
 package com.kostagram.view;
 
+import com.sun.tools.javac.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 public class PostView extends JFrame {
     private JTextArea contentArea = new JTextArea(10, 30);
     private JButton postButton = new JButton("Post");
-    private JButton uploadButton = new JButton("Upload Image");
-    private JLabel imageLabel = new JLabel();
-    private File selectedFile;
-
     public PostView() {
-        setTitle("Add Post");
-        setSize(400, 400);
+        setSize(1050, 750);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
+        setResizable(false);
         JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JScrollPane(contentArea), BorderLayout.CENTER);
+        // 상단
+        JPanel topPanel = new JPanel();
+        topPanel.setBackground(MainView.bgColor);
+        topPanel.setPreferredSize(new Dimension(1050, 42));
+        //게시글 내용 작성 패널
+        JPanel leftPanel = new JPanel();
+        leftPanel.setBackground(MainView.bgColor);
+        leftPanel.setPreferredSize(new Dimension(710, 710));
+        String defaultImagePath = "./src/com/kostagram/image/";
+        JLabel imageLabel = new JLabel(new ImageIcon(defaultImagePath+"test1.jpg"));
+        imageLabel.setPreferredSize(new Dimension(710, 710));
+        leftPanel.add(imageLabel);
 
-        JPanel southPanel = new JPanel(new BorderLayout());
-        southPanel.add(uploadButton, BorderLayout.WEST);
-        southPanel.add(postButton, BorderLayout.EAST);
-        panel.add(southPanel, BorderLayout.SOUTH);
+        //게시글 내용 작성 패널
+        JPanel rightPanel = new JPanel();
+        rightPanel.setBackground(MainView.fgColor);
+        rightPanel.setPreferredSize(new Dimension(340, 710));
 
-        JPanel imagePanel = new JPanel(new BorderLayout());
-        imagePanel.add(imageLabel, BorderLayout.CENTER);
-        panel.add(imagePanel, BorderLayout.NORTH);
-
-        add(panel);
-
-        uploadButton.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-            int result = fileChooser.showOpenDialog(null);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                selectedFile = fileChooser.getSelectedFile();
-                ImageIcon imageIcon = new ImageIcon(selectedFile.getAbsolutePath());
-                imageLabel.setIcon(imageIcon);
-            }
-        });
+        panel.add(topPanel, BorderLayout.NORTH);
+        panel.add(leftPanel, BorderLayout.WEST);
+        panel.add(rightPanel, BorderLayout.EAST);
+        this.add(panel);
+        this.setVisible(true);
     }
 
     public String getContent() {
         return contentArea.getText();
     }
 
-    public File getSelectedFile() {
-        return selectedFile;
-    }
-
     public void addPostListener(ActionListener listener) {
         postButton.addActionListener(listener);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(PostView::new);
     }
 }

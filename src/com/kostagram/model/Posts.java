@@ -1,17 +1,25 @@
 package com.kostagram.model;
 
-import javax.swing.ImageIcon;
 import java.util.Date;
 
 public class Posts {
     private String postId;
+    private String imageId;
     private String userId;
     private String content;
-    private String imagePath;
+    private int likesCount;
     private Date createDate;
-    private ImageIcon imageIcon;
 
-    // Getters and Setters for all fields
+
+
+    public String getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
+    }
+
     public String getPostId() {
         return postId;
     }
@@ -36,30 +44,11 @@ public class Posts {
         this.content = content;
     }
 
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
     public Date getCreateDate() {
         return createDate;
     }
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-    }
-
-    public ImageIcon getImageIcon() {
-        if (imagePath != null) {
-            imageIcon = new ImageIcon(imagePath);
-        }
-        return imageIcon;
-    }
-
-    public void setImageIcon(ImageIcon imageIcon) {
-        this.imageIcon = imageIcon;
     }
 }
