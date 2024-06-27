@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class MainView extends JFrame {
+
     private JButton addPostButton = new JButton("Add Post");
     private JButton logoutButton = new JButton("Logout");
     private JPanel postsPanel = new JPanel();
@@ -28,6 +29,7 @@ public class MainView extends JFrame {
         mainPanel.add(buttonsPanel, BorderLayout.SOUTH);
 
         add(mainPanel);
+        setVisible(true);
     }
 
     public void addPost(String postContent) {
@@ -61,5 +63,9 @@ public class MainView extends JFrame {
 
     public void addLogoutListener(ActionListener listener) {
         logoutButton.addActionListener(listener);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(MainView::new);
     }
 }
