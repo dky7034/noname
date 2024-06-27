@@ -26,8 +26,10 @@ public class MainController {
 
         loadPosts();
 
-        this.mainView.addAddPostListener(new AddPostListener());
-        this.mainView.addLogoutListener(new LogoutListener());
+        this.mainView.addHomeBtnListener(new HomeBtnListener());
+        this.mainView.addSearchBtnListener(new SearchBtnListener());
+        this.mainView.addAddBtnListener(new AddBtnListener());
+        this.mainView.addUserBtnListener(new UserBtnListener());
     }
 
     private void loadPosts() {
@@ -35,10 +37,10 @@ public class MainController {
         String postsText = posts.stream()
                 .map(post -> post.getUserId() + ": " + post.getContent())
                 .collect(Collectors.joining("\n"));
-        mainView.setPosts(postsText);
+
     }
 
-    class AddPostListener implements ActionListener {
+    class HomeBtnListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             PostView postView = new PostView();
             PostController postController = new PostController(postView, userInfo, postDao);
@@ -46,12 +48,35 @@ public class MainController {
         }
     }
 
-    class LogoutListener implements ActionListener {
+    class SearchBtnListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            LoginView loginView = new LoginView();
-            LoginController loginController = new LoginController(loginView, UserDao.getInstance());
-            mainView.dispose();
-            loginView.setVisible(true);
+            PostView postView = new PostView();
+            PostController postController = new PostController(postView, userInfo, postDao);
+            postView.setVisible(true);
         }
     }
+
+    class AddBtnListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            PostView postView = new PostView();
+            PostController postController = new PostController(postView, userInfo, postDao);
+            postView.setVisible(true);
+        }
+    }
+
+    class UserBtnListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            PostView postView = new PostView();
+            PostController postController = new PostController(postView, userInfo, postDao);
+            postView.setVisible(true);
+        }
+    }
+//    class LogoutListener implements ActionListener {
+//        public void actionPerformed(ActionEvent e) {
+//            LoginView loginView = new LoginView();
+//            LoginController loginController = new LoginController(loginView, UserDao.getInstance());
+//            mainView.dispose();
+//            loginView.setVisible(true);
+//        }
+//    }
 }
