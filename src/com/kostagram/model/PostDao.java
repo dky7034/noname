@@ -51,6 +51,8 @@ public class PostDao {
                 post.setUserId(rs.getString("user_id"));
                 post.setContent(rs.getString("post_content"));
                 post.setCreateDate(rs.getDate("create_date"));
+                //post.setCreateDate(rs.getInt("likes_count"));
+                //post.setCreateDate(rs.getString("post_image"));
                 posts.add(post);
             }
 

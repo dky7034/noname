@@ -4,9 +4,21 @@ import java.util.Date;
 
 public class Posts {
     private String postId;
+    private String imageId;
     private String userId;
     private String content;
+    private int likesCount;
     private Date createDate;
+
+
+
+    public String getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
+    }
 
     public String getPostId() {
         return postId;
