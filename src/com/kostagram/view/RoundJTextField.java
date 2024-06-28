@@ -46,4 +46,5 @@ public class RoundJTextField extends JTextField {
         foreground = color;
         setForeground(color);
     }
+
 }
