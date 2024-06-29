@@ -2,19 +2,12 @@ package com.kostagram.controller;
 
 import com.kostagram.model.PostDao;
 import com.kostagram.model.SearchDao;
-import com.kostagram.model.UserDao;
 import com.kostagram.model.Users;
-import com.kostagram.view.MainView;
 import com.kostagram.view.PostView;
 import com.kostagram.view.SearchView;
 
-import java.awt.image.BufferedImage;
-import java.util.List;
-
 public class SearchController {
     private SearchView searchView;
-    private Users userInfo;
-    private PostDao postDao;
     private SearchDao searchDao;
 
     public SearchController(SearchView searchView, SearchDao searchDao) {
@@ -28,23 +21,20 @@ public class SearchController {
     }
 
     private void goToHome() {
-        MainView mainView = new MainView();
-        MainController mainController = new MainController(mainView, userInfo);
         searchView.dispose();
-        mainView.setVisible(true);
     }
 
     private void goToAddPost() {
-        PostView postView = new PostView(userInfo, postDao);
-        PostController postController = new PostController(postView, userInfo, postDao);
+        Users userInfo = new Users();
+        PostView postView = new PostView(userInfo, PostDao.getInstance());
+        PostController postController = new PostController();
         searchView.dispose();
         postView.setVisible(true);
     }
 
     private void goToSearch() {
-        String keyword = searchView.getSearchText();
-        List<BufferedImage> searchResults = searchDao.searchImages(keyword);
-        searchView.displayImages(searchResults);
+        // 현재 뷰를 다시 보이도록 설정
+        searchView.setVisible(true);
     }
 
     private void goToUserPage() {

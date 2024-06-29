@@ -24,7 +24,6 @@ public class PostDao {
 
     /**
      * PostDao의 인스턴스를 반환합니다.
-     *
      * @return PostDao 인스턴스
      */
     public static PostDao getInstance() {
@@ -33,7 +32,6 @@ public class PostDao {
 
     /**
      * 새로운 게시글을 데이터베이스에 추가합니다.
-     *
      * @param posts 게시글 객체
      * @throws SQLException SQL 예외
      */
@@ -52,7 +50,6 @@ public class PostDao {
 
     /**
      * 데이터베이스에서 모든 게시글을 가져옵니다.
-     *
      * @return 게시글 목록
      */
     public List<Posts> getPosts() {

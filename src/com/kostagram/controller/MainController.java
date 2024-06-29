@@ -43,7 +43,7 @@ public class MainController {
     class SearchBtnListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             SearchView searchView = new SearchView();
-            SearchController searchController = new SearchController(searchView, new SearchDao());
+            SearchController searchController = new SearchController(searchView, SearchDao.getInstance());
             searchView.setVisible(true);
         }
     }

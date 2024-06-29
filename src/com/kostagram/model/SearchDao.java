@@ -1,26 +1,28 @@
 package com.kostagram.model;
 
 import com.kostagram.db.ConnectionProvider;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import javax.imageio.ImageIO;
 
 public class SearchDao {
     private static SearchDao instance = new SearchDao();
 
-    public SearchDao() {}
+    private SearchDao() {}
 
     public static SearchDao getInstance() {
         return instance;
     }
 
-    public List<BufferedImage> searchImages(String query) {
-        List<BufferedImage> images = new ArrayList<>();
-        String sql = "SELECT post_id FROM posts WHERE post_content LIKE ?";
+    // 게시물 검색 메서드
+    public List<Posts> searchPosts(String query) {
+        List<Posts> postsList = new ArrayList<>();
+        String sql = "SELECT * FROM posts WHERE post_content LIKE ?";
 
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -28,17 +30,40 @@ public class SearchDao {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                String imagePath = rs.getString("post_id");
-                try {
-                    BufferedImage img = ImageIO.read(new File(imagePath));
-                    images.add(img);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                String postId = rs.getString("post_id");
+                String content = rs.getString("post_content");
+                Date createDate = rs.getDate("create_date");
+                String userId = rs.getString("user_id");
+                int likesCount = rs.getInt("likes_count");
+
+                Posts post = new Posts(postId, content, createDate, userId, likesCount);
+                postsList.add(post);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return images;
+        return postsList;
+    }
+
+    // 게시물 ID로 특정 게시물 조회 메서드 추가
+    public Posts searchPostById(String postId) {
+        String sql = "SELECT * FROM posts WHERE post_id = ?";
+        try (Connection conn = ConnectionProvider.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, postId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String content = rs.getString("post_content");
+                Date createDate = rs.getDate("create_date");
+                String userId = rs.getString("user_id");
+                int likesCount = rs.getInt("likes_count");
+
+                return new Posts(postId, content, createDate, userId, likesCount);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // 해당 게시물 아이디에 해당하는 게시물이 없을 경우 null 반환
     }
 }

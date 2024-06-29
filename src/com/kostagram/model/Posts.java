@@ -10,6 +10,22 @@ public class Posts {
     private int likesCount;
     private int commentsCount; // 댓글 수 필드 추가
 
+    // 생성자
+    public Posts(String postId, String postContent) {
+        this.postId = postId;
+        this.postContent = postContent;
+    }
+
+    public Posts() {}
+
+    public Posts(String postId, String postContent, Date createDate, String userId, int likesCount) {
+        this.postId = postId;
+        this.postContent = postContent;
+        this.createDate = createDate;
+        this.userId = userId;
+        this.likesCount = likesCount;
+    }
+
     // Getter and Setter for postId
     public String getPostId() {
         return postId;

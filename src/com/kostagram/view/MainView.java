@@ -16,7 +16,7 @@ public class MainView extends JFrame {
     private JScrollPane scrollPane; // 리스트를 스크롤할 수 있도록 하는 JScrollPane
     private boolean loading = false; // 데이터 로딩 중 여부를 나타내는 플래그
     private boolean allDataLoaded = false; // 추가 데이터가 더 이상 없는지 확인하기 위한 변수
-    protected static final Font KostagramFont = new Font("맑은 고딕", Font.BOLD, 20);
+    protected static final Font kostagramFont = new Font("맑은 고딕", Font.BOLD, 20);
     protected static final Font font = new Font("맑은 고딕", Font.BOLD, 16); // 글꼴 설정
     protected static final Font contentFont = new Font("맑은 고딕", Font.BOLD, 14); // 내용 글꼴 설정
     protected static final Color bgColor = Color.BLACK; // 배경 색 설정
@@ -41,7 +41,7 @@ public class MainView extends JFrame {
         topPanel.setBackground(bgColor); // 상단 패널 배경 색 설정
         topPanel.setPreferredSize(new Dimension(450, 45)); // 상단 패널 크기 설정
         JLabel titleLabel = new JLabel(" Kostagram"); // 제목 라벨 생성
-        titleLabel.setFont(KostagramFont); // 제목 라벨 글꼴 설정
+        titleLabel.setFont(kostagramFont); // 제목 라벨 글꼴 설정
         titleLabel.setForeground(Color.white); // 제목 라벨 글자 색 설정
         topPanel.add(titleLabel); // 상단 패널에 제목 라벨 추가
         topPanel.add(Box.createHorizontalGlue()); // 상단 패널에 수평 글루 추가 (라벨 오른쪽 정렬)

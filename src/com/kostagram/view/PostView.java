@@ -6,15 +6,12 @@ import com.kostagram.model.Users;
 
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 public class PostView extends JFrame {
     private BottomPanel bottomPanel;
-    private JLabel imageLabel;
     private JTextArea contentArea;
     private JTextArea hashtagArea;
     private PostController postController;
@@ -23,61 +20,23 @@ public class PostView extends JFrame {
         this.postController = new PostController(this, userInfo, postDao);
 
         setTitle("새 게시물 만들기");
-        setSize(1050, 750);
+        setSize(475, 950); // 프레임 크기 설정
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
         // 메인 패널
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.BLACK);
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(Color.BLACK);
 
-        // 상단 패널
-        JPanel topPanel = new JPanel();
-        topPanel.setBackground(Color.BLACK);
-        topPanel.setPreferredSize(new Dimension(1050, 42));
-        panel.add(topPanel, BorderLayout.NORTH);
-
-        // 게시글 이미지 패널
-        JPanel leftPanel = new JPanel(new BorderLayout());
-        leftPanel.setBackground(Color.BLACK);
-        leftPanel.setPreferredSize(new Dimension(710, 710));
-        String defaultImagePath = "./src/com/kostagram/image/";
-        imageLabel = new JLabel(new ImageIcon(defaultImagePath + "test.jpg"));
-        imageLabel.setHorizontalAlignment(JLabel.CENTER);
-        leftPanel.add(imageLabel, BorderLayout.CENTER);
-
-        // 이미지 파일 선택 버튼 추가
-        JButton selectImageButton = new JButton("이미지 선택");
-        styleButton(selectImageButton);
-        selectImageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                // 파일 필터 추가
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files", "jpg", "png", "gif", "bmp");
-                fileChooser.setFileFilter(filter);
-                int result = fileChooser.showOpenDialog(null);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    imageLabel.setIcon(new ImageIcon(selectedFile.getPath()));
-                }
-            }
-        });
-        leftPanel.add(selectImageButton, BorderLayout.SOUTH);
-
-        panel.add(leftPanel, BorderLayout.CENTER);
-
-        // 게시글 내용 작성 패널
+        // 우측 패널
         JPanel rightPanel = new JPanel();
         rightPanel.setBackground(Color.BLACK);
-        rightPanel.setPreferredSize(new Dimension(340, 710));
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 
         // 내용 입력 필드
         JLabel contentLabel = new JLabel("내용 입력", JLabel.CENTER);
         styleLabel(contentLabel);
-        contentLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         rightPanel.add(contentLabel);
 
         contentArea = new JTextArea(10, 30);
@@ -85,13 +44,11 @@ public class PostView extends JFrame {
         JScrollPane contentScrollPane = new JScrollPane(contentArea);
         contentScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         contentScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        contentScrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         rightPanel.add(contentScrollPane);
 
         // 해시태그 입력 필드
         JLabel hashtagLabel = new JLabel("해시태그", JLabel.CENTER);
         styleLabel(hashtagLabel);
-        hashtagLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         rightPanel.add(hashtagLabel);
 
         hashtagArea = new JTextArea(3, 30);
@@ -99,7 +56,6 @@ public class PostView extends JFrame {
         JScrollPane hashtagScrollPane = new JScrollPane(hashtagArea);
         hashtagScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         hashtagScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        hashtagScrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         rightPanel.add(hashtagScrollPane);
 
         // 게시 버튼 추가
@@ -123,9 +79,9 @@ public class PostView extends JFrame {
         rightPanel.add(Box.createVerticalStrut(10)); // 간격 추가
         rightPanel.add(postButton);
 
-        panel.add(rightPanel, BorderLayout.EAST);
+        mainPanel.add(rightPanel, BorderLayout.CENTER);
 
-        add(panel);
+        add(mainPanel);
         setVisible(true);
     }
 

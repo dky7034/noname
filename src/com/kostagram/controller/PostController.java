@@ -12,6 +12,9 @@ public class PostController {
     private Users userInfo;
     private PostDao postDao;
 
+    // 생성자
+    public PostController() {}
+
     public PostController(PostView postView, Users userInfo, PostDao postDao) {
         this.postView = postView;
         this.userInfo = userInfo;
