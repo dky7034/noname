@@ -169,6 +169,7 @@ public class SearchView extends JFrame {
         JPanel postPanel = new JPanel();
         postPanel.setLayout(new BorderLayout());
         postPanel.setBackground(Color.white); // 패널 배경색 설정
+        postPanel.setPreferredSize(new Dimension(120, 120)); // 패널 크기 고정
         postPanel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1)); // 테두리 설정
 
         JLabel postIdLabel = new JLabel("게시물 ID: " + post.getPostId());
@@ -184,14 +185,16 @@ public class SearchView extends JFrame {
         postPanel.add(postIdLabel, BorderLayout.NORTH);
         postPanel.add(new JScrollPane(postContentArea), BorderLayout.CENTER);
 
-        // 패널 크기를 정사각형으로 설정
-        Dimension panelSize = new Dimension(120, 120); // 가로와 세로를 동일하게 설정
-        postPanel.setPreferredSize(panelSize);
-        postPanel.setMaximumSize(panelSize);
-        postPanel.setMinimumSize(panelSize);
+        // 패널 클릭 시 상세 페이지로 이동하는 리스너 추가
+        postPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                showPostDetail(post);
+            }
+        });
 
         return postPanel;
     }
+
 
 
     /*
