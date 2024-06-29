@@ -4,10 +4,29 @@ import java.util.Date;
 
 public class Posts {
     private String postId;
-    private String userId;
-    private String content;
+    private String postContent;
     private Date createDate;
+    private String userId;
+    private int likesCount;
+    private int commentsCount; // 댓글 수 필드 추가
 
+    // 생성자
+    public Posts(String postId, String postContent) {
+        this.postId = postId;
+        this.postContent = postContent;
+    }
+
+    public Posts() {}
+
+    public Posts(String postId, String postContent, Date createDate, String userId, int likesCount) {
+        this.postId = postId;
+        this.postContent = postContent;
+        this.createDate = createDate;
+        this.userId = userId;
+        this.likesCount = likesCount;
+    }
+
+    // Getter and Setter for postId
     public String getPostId() {
         return postId;
     }
@@ -16,6 +35,25 @@ public class Posts {
         this.postId = postId;
     }
 
+    // Getter and Setter for postContent
+    public String getPostContent() {
+        return postContent;
+    }
+
+    public void setPostContent(String postContent) {
+        this.postContent = postContent;
+    }
+
+    // Getter and Setter for createDate
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    // Getter and Setter for userId
     public String getUserId() {
         return userId;
     }
@@ -24,19 +62,21 @@ public class Posts {
         this.userId = userId;
     }
 
-    public String getContent() {
-        return content;
+    // Getter and Setter for likesCount
+    public int getLikesCount() {
+        return likesCount;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setLikesCount(int likesCount) {
+        this.likesCount = likesCount;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    // Getter and Setter for commentsCount
+    public int getCommentsCount() {
+        return commentsCount;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCommentsCount(int commentsCount) {
+        this.commentsCount = commentsCount;
     }
 }

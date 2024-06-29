@@ -11,7 +11,7 @@ public class ConnectionProvider {
     //static method, no parameter, returns connection, and name to 'getConnection'
     public static Connection getConnection() {
         Connection conn = null;
-        String url = "jdbc:oracle:thin:@localhost:1521:xe";
+        String url = "jdbc:oracle:thin:@localhost:1521:XE";
         String username = "noname";
         String password = "noname";
         try {
