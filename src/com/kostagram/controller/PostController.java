@@ -21,7 +21,7 @@ public class PostController {
         this.postDao = postDao;
     }
 
-    public boolean addPost(String content) {
+    public boolean addPost(String content, String hashTag) {
         Posts post = new Posts();
         post.setUserId(userInfo.getUserId());
         post.setPostContent(content);

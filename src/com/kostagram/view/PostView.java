@@ -71,7 +71,7 @@ public class PostView extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String content = contentArea.getText(); // 내용 가져오기
                 String hashtags = hashtagArea.getText(); // 해시태그 가져오기
-                boolean isSuccess = postController.addPost(content); // 게시물 추가 시도
+                boolean isSuccess = postController.addPost(content, hashtags); // 게시물 추가 시도
                 if (isSuccess) {
                     JOptionPane.showMessageDialog(null, "게시글 작성 성공!\n내용: " + content + "\n해시태그: " + hashtags);
                     dispose(); // 창 닫기
