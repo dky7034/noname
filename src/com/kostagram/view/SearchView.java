@@ -135,6 +135,12 @@ public class SearchView extends JFrame {
         });
     }
 
+    // userInfo 객체를 가져올 수 있도록 하는 메서드
+    // SearchController가 SearchView에서 전달된 사용자 정보를 사용할 수 있도록 함
+    public Users getUserInfo() {
+        return userInfo;
+    }
+
     // 검색 기능 관련 코드
     public void displayPosts(List<Posts> posts) {
         resultsPanel.removeAll();
