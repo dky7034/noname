@@ -13,13 +13,13 @@ public class RegisterView extends JFrame {
     private RoundJPasswordField passwordField = new RoundJPasswordField(25,new Color(54,54,54), Color.white,"Password");
     private FadeButton registerButton = new FadeButton(new Color(0,150,247), new Color(0,92,192),
             Color.white, "Register");
-    private JButton backButton = new JButton(new ImageIcon("src/com/kostagram/image/free-icon-back-arrow.png"));
+    private JButton backButton = new JButton(new ImageIcon("image/back-icon.png"));
 
     public RegisterView() {
         setTitle("Register");
         setSize(450, 920);
         setLocationRelativeTo(null);
-
+        setResizable(false);
         // 회원가입 화면 구성
         JPanel signUpPanel = new JPanel(new GridBagLayout());
         signUpPanel.setBackground(new Color(0, 0, 0));
