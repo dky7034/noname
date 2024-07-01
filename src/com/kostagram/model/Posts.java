@@ -7,6 +7,7 @@ public class Posts {
     private String postContent;
     private Date createDate;
     private String userId;
+//    private String hashTag;
     private int likesCount;
     private int commentsCount; // 댓글 수 필드 추가
 
@@ -23,6 +24,7 @@ public class Posts {
         this.postContent = postContent;
         this.createDate = createDate;
         this.userId = userId;
+//        this.hashTag = hashTag;
         this.likesCount = likesCount;
     }
 

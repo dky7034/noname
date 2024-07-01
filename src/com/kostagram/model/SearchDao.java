@@ -34,6 +34,7 @@ public class SearchDao {
                 String content = rs.getString("post_content");
                 Date createDate = rs.getDate("create_date");
                 String userId = rs.getString("user_id");
+//                String hashTag = rs.getString("hash_tag");
                 int likesCount = rs.getInt("likes_count");
 
                 Posts post = new Posts(postId, content, createDate, userId, likesCount);
