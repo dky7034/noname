@@ -36,8 +36,10 @@ public class SearchDao {
                 String userId = rs.getString("user_id");
 //                String hashTag = rs.getString("hash_tag");
                 int likesCount = rs.getInt("likes_count");
+                String hashTags = "";
 
-                Posts post = new Posts(postId, content, createDate, userId, likesCount);
+
+                Posts post = new Posts(postId, content, createDate, userId, likesCount, hashTags);
                 postsList.add(post);
             }
         } catch (SQLException e) {
@@ -59,8 +61,9 @@ public class SearchDao {
                 Date createDate = rs.getDate("create_date");
                 String userId = rs.getString("user_id");
                 int likesCount = rs.getInt("likes_count");
+                String hashTags = "";
 
-                return new Posts(postId, content, createDate, userId, likesCount);
+                return new Posts(postId, content, createDate, userId, likesCount,hashTags);
             }
         } catch (SQLException e) {
             e.printStackTrace();

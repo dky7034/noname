@@ -7,25 +7,29 @@ public class Posts {
     private String postContent;
     private Date createDate;
     private String userId;
-//    private String hashTag;
+    private String hashTags;
+    private String userName;
     private int likesCount;
     private int commentsCount; // 댓글 수 필드 추가
 
-    // 생성자
-    public Posts(String postId, String postContent) {
-        this.postId = postId;
-        this.postContent = postContent;
-    }
-
     public Posts() {}
 
-    public Posts(String postId, String postContent, Date createDate, String userId, int likesCount) {
+    public Posts(String postId, String postContent, Date createDate, String userId, int likesCount, String hashTags, String userName) {
         this.postId = postId;
         this.postContent = postContent;
         this.createDate = createDate;
         this.userId = userId;
-//        this.hashTag = hashTag;
         this.likesCount = likesCount;
+        this.hashTags = hashTags;
+        this.userName = userName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     // Getter and Setter for postId
@@ -35,6 +39,14 @@ public class Posts {
 
     public void setPostId(String postId) {
         this.postId = postId;
+    }
+
+    public String getHashTags() {
+        return hashTags;
+    }
+
+    public void setHashTags(String hashTags) {
+        this.hashTags = hashTags;
     }
 
     // Getter and Setter for postContent

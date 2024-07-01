@@ -5,8 +5,12 @@ import com.kostagram.view.MainView;
 import com.kostagram.view.PostView;
 import com.kostagram.view.SearchView;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class MainController {
@@ -54,7 +58,7 @@ public class MainController {
             PostController postController = new PostController(postView, userInfo, postDao);
             postView.setVisible(true);
         }
-    }
+    };
 
     // 마이페이지 이동 버튼
     class UserBtnListener implements ActionListener {

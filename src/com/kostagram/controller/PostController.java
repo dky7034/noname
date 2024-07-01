@@ -25,6 +25,7 @@ public class PostController {
         Posts post = new Posts();
         post.setUserId(userInfo.getUserId());
         post.setPostContent(content);
+        post.setHashTags(hashTag);
         try {
             postDao.addPost(post);
             return true;
