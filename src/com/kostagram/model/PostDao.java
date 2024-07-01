@@ -36,12 +36,15 @@ public class PostDao {
      * @throws SQLException SQL 예외
      */
     public void addPost(Posts posts) throws SQLException {
-        String sql = "INSERT INTO posts(user_id, post_content) VALUES(?, ?)";
+        String sql = "CALL PROC_NEW_POST(?, ?, ?)";
+        //String sql = "INSERT INTO posts(user_id, post_content) VALUES(?, ?)";
 
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, posts.getUserId());
-            pstmt.setString(2, posts.getPostContent());
+            System.out.println(posts.getPostContent()+";"+ posts.getUserId()+";"+ posts.getHashTags());
+            pstmt.setString(1, posts.getPostContent());
+            pstmt.setString(2, posts.getUserId());
+            pstmt.setString(3, posts.getHashTags());
             pstmt.executeUpdate();
         }
         System.out.println("sql = " + sql);
@@ -54,7 +57,7 @@ public class PostDao {
      */
     public List<Posts> getPosts() {
 //        String sql = "SELECT post_id, user_id, post_content, create_date FROM posts";
-        String sql = "SELECT p.post_id, p.user_id, p.post_content, p.create_date, "
+        String sql = "SELECT p.post_id, (SELECT SUBSTR(USERS.USER_EMAIL, 0, INSTR(USER_EMAIL, '@')-1) AS user_name, p.post_content, p.create_date, "
                 + "(SELECT COUNT(*) FROM comments c WHERE c.post_id = p.post_id) AS comments_count "
                 + "FROM posts p";
         List<Posts> posts = new ArrayList<>();
