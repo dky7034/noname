@@ -1,15 +1,16 @@
 package com.kostagram.model;
 
-import java.sql.Timestamp;
+
+import java.util.Date;
 
 public class Comments {
-    private int id;
+    private String id;
     private String commentContent;
     private String userId;
     private String postId;
-    private Timestamp createDate;
+    private Date createDate;
 
-    public Comments(int id, String commentContent, String userId, String postId, Timestamp createDate) {
+    public Comments(String id, String commentContent, String userId, String postId, Date createDate) {
         this.id = id;
         this.commentContent = commentContent;
         this.userId = userId;
@@ -17,7 +18,15 @@ public class Comments {
         this.createDate = createDate;
     }
 
-    public int getId() {
+    public Comments(String commentContent) {
+        this.commentContent = commentContent;
+    }
+
+    public Comments() {
+        super();
+    }
+
+    public String getId() {
         return id;
     }
 
@@ -33,7 +42,8 @@ public class Comments {
         return postId;
     }
 
-    public Timestamp getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 }
+

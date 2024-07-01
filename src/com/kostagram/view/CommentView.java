@@ -3,6 +3,7 @@ package com.kostagram.view;
 import com.kostagram.controller.CommentController;
 import com.kostagram.controller.LoginController;
 import com.kostagram.model.CommentDao;
+import com.kostagram.model.Posts;
 import com.kostagram.model.Users;
 import com.kostagram.model.Comments;
 
@@ -18,13 +19,14 @@ public class CommentView extends JFrame {
     private JButton commentAddBtn = new JButton();
     private JTextField textField = new JTextField();
     private Users user;
+    private Posts post;
     private CommentController commentController;
     private CommentDao commentDao;
 
     protected static final Font font = new Font("맑은 고딕", Font.BOLD, 12);
     protected static final Color bgColor = new Color(38, 41, 46);
 
-    public CommentView() {
+    public CommentView(String postId) {
         user = LoginController.users;  // user 초기화
 
         setTitle("Comment");
@@ -80,8 +82,8 @@ public class CommentView extends JFrame {
 
         // CommentController 초기화
         commentDao = CommentDao.getInstance();
-        String postId = "samplePostId";  // 실제 포스트 ID로 변경
-        commentController = new CommentController(commentDao, this, postId, user);
+//        String postId = "";  // 실제 포스트 ID로 변경
+        commentController = new CommentController(this,commentDao, postId, user);
 
         // 기존 댓글 불러오기
         displayComments();
@@ -143,13 +145,13 @@ public class CommentView extends JFrame {
 
         JLabel userId = new JLabel(comment.getUserId());
         userId.setForeground(Color.WHITE);
-        JLabel postTime = new JLabel(comment.getCreateDate().toString());
-        postTime.setForeground(Color.LIGHT_GRAY);
+//        JLabel postTime = new JLabel(comment.getCreateDate()+"");
+//        postTime.setForeground(Color.LIGHT_GRAY);
 
         userInfoPanel.add(userImage);
         userInfoPanel.add(userId);
         userInfoPanel.add(Box.createHorizontalStrut(10));
-        userInfoPanel.add(postTime);
+//        userInfoPanel.add(postTime);
 
         JTextArea commentTextArea = new JTextArea();
         commentTextArea.setLineWrap(true);
@@ -178,12 +180,17 @@ public class CommentView extends JFrame {
         }
     }
 
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                new CommentView().setVisible(true);
+//            }
+//        });
+//    }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new CommentView().setVisible(true);
-            }
-        });
+        SwingUtilities.invokeLater(() -> new CommentView("samplePostId").setVisible(true));
     }
 }
+

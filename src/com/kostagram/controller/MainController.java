@@ -1,10 +1,7 @@
 package com.kostagram.controller;
 
 import com.kostagram.model.*;
-import com.kostagram.view.MainView;
-import com.kostagram.view.MyPageView;
-import com.kostagram.view.PostView;
-import com.kostagram.view.SearchView;
+import com.kostagram.view.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,10 +14,12 @@ import java.util.List;
 public class MainController {
     private MainView mainView;
     private Users userInfo;
+    private Posts post;
 
     // DAO 생성
     PostDao postDao = PostDao.getInstance();
     MyPageDao myPageDao = MyPageDao.getInstance();
+    CommentDao commentDao = CommentDao.getInstance();
 
     public MainController(MainView mainView, Users userInfo) {
         this.mainView = mainView;

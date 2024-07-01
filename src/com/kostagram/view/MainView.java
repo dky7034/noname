@@ -142,7 +142,7 @@ public class MainView extends JFrame {
 
             // 댓글 버튼에 액션 리스너 추가
             commentButton.addActionListener(e -> {
-                CommentView commentView = new CommentView(); // 댓글 뷰 생성
+                CommentView commentView = new CommentView(post.getPostId()); // 댓글 뷰 생성
                 CommentController commentController = new CommentController(commentView, CommentDao.getInstance(), post.getPostId(), LoginController.users); // 댓글 컨트롤러 생성
                 commentView.setVisible(true); // 댓글 뷰 보이기 설정
             });
@@ -164,7 +164,7 @@ public class MainView extends JFrame {
             // 댓글 수 라벨에 액션 리스너 추가
             commentCountLabel.addMouseListener(new MouseAdapter() { // 마우스 리스너 추가
                 public void mouseClicked(MouseEvent evt) {
-                    CommentView commentView = new CommentView(); // 댓글 뷰 생성
+                    CommentView commentView = new CommentView(post.getPostId()); // 댓글 뷰 생성
                     CommentController commentController = new CommentController(commentView, CommentDao.getInstance(), post.getPostId(), LoginController.users); // 댓글 컨트롤러 생성
                     commentView.setVisible(true); // 댓글 뷰 보이기 설정
                 }

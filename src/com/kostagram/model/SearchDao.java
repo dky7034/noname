@@ -35,10 +35,10 @@ public class SearchDao {
                 Date createDate = rs.getDate("create_date");
                 String userId = rs.getString("user_id");
                 int likesCount = rs.getInt("likes_count");
-                String hashTag = rs.getString("hash_tag");
+                String hashTags = rs.getString("hash_tags");
                 String userName = rs.getString("user_name");
 
-                Posts post = new Posts(postId, content, createDate, userId, likesCount, hashTag, userName);
+                Posts post = new Posts(postId, content, createDate, userId, likesCount, hashTags, userName);
                 postsList.add(post);
             }
         } catch (SQLException e) {
@@ -60,10 +60,9 @@ public class SearchDao {
                 Date createDate = rs.getDate("create_date");
                 String userId = rs.getString("user_id");
                 int likesCount = rs.getInt("likes_count");
-                String hashTag = rs.getString("hash_tag");
+                String hashTags = rs.getString("hash_tags");
                 String userName = rs.getString("user_name");
-
-                return new Posts(postId, content, createDate, userId, likesCount, hashTag, userName);
+                return new Posts(postId, content, createDate, userId, likesCount,hashTags, userName);
             }
         } catch (SQLException e) {
             e.printStackTrace();

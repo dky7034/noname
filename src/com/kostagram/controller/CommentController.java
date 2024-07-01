@@ -12,7 +12,7 @@ public class CommentController {
     private Users user;
     private CommentView view;
 
-    public CommentController(CommentDao commentDao, CommentView view, String postId, Users user) {
+    public CommentController( CommentView view, CommentDao commentDao, String postId, Users user) {
         this.commentDao = commentDao;
         this.view = view;
         this.postId = postId;
@@ -24,8 +24,9 @@ public class CommentController {
     }
 
     public void addComment(String content) {
-        Comments comment = new Comments(0, content, user.getEmail(), postId);  // 생성자에 맞게 수정하세요.
+        Comments comment = new Comments(content);  // 생성자에 맞게 수정하세요.
         commentDao.addComment(comment);
         view.addCommentPanel(comment);
     }
 }
+
