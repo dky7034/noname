@@ -7,20 +7,20 @@ public class Posts {
     private String postContent;
     private Date createDate;
     private String userId;
-    private String hashTags;
+    private String hashTag;
     private String userName;
     private int likesCount;
     private int commentsCount;
 
     public Posts() {}
 
-    public Posts(String postId, String postContent, Date createDate, String userId, int likesCount, String hashTags, String userName) {
+    public Posts(String postId, String postContent, Date createDate, String userId, int likesCount, String hashTag, String userName) {
         this.postId = postId;
         this.postContent = postContent;
         this.createDate = createDate;
         this.userId = userId;
         this.likesCount = likesCount;
-        this.hashTags = hashTags;
+        this.hashTag = hashTag;
         this.userName = userName;
     }
 
@@ -50,11 +50,11 @@ public class Posts {
     }
 
     public String getHashTags() {
-        return hashTags;
+        return hashTag;
     }
 
-    public void setHashTags(String hashTags) {
-        this.hashTags = hashTags;
+    public void setHashTags(String hashTag) {
+        this.hashTag = hashTag;
     }
 
     // Getter and Setter for postContent
