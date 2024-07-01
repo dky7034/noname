@@ -57,9 +57,9 @@ public class PostDao {
      */
     public List<Posts> getPosts() {
 //        String sql = "SELECT post_id, user_id, post_content, create_date FROM posts";
-        String sql = "SELECT p.post_id, (SELECT SUBSTR(USERS.USER_EMAIL, 0, INSTR(USER_EMAIL, '@')-1) AS user_name, p.post_content, p.create_date, "
-                + "(SELECT COUNT(*) FROM comments c WHERE c.post_id = p.post_id) AS comments_count "
-                + "FROM posts p";
+        String sql = "SELECT P.POST_ID, P.USER_ID,(SELECT SUBSTR(U.USER_EMAIL, 0, INSTR(U.USER_EMAIL, '@')-1) from USERS U where U.USER_ID = P.USER_ID) AS USER_NAME, P.POST_CONTENT, P.CREATE_DATE,"
+                + " (SELECT COUNT(*) FROM COMMENTS C WHERE C.POST_ID = P.POST_ID) AS COMMENT_COUNT "
+                + " FROM POSTS P";
         List<Posts> posts = new ArrayList<>();
 
         try (Connection conn = ConnectionProvider.getConnection();
@@ -68,11 +68,12 @@ public class PostDao {
 
             while (rs.next()) {
                 Posts post = new Posts();
-                post.setPostId(rs.getString("post_id"));
-                post.setUserId(rs.getString("user_id"));
-                post.setPostContent(rs.getString("post_content"));
-                post.setCreateDate(rs.getDate("create_date"));
-                post.setCommentsCount(rs.getInt("comments_count")); // 댓글 수 설정
+                post.setPostId(rs.getString("POST_ID"));
+                post.setUserId(rs.getString("USER_ID"));
+                post.setPostContent(rs.getString("USER_NAME"));
+                post.setPostContent(rs.getString("POST_CONTENT"));
+                post.setCreateDate(rs.getDate("CREATE_DATE"));
+                post.setCommentsCount(rs.getInt("COMMENT_COUNT")); // 댓글 수 설정
                 posts.add(post);
             }
 
