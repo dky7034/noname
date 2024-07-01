@@ -72,7 +72,7 @@ public class PostDetailView extends JFrame {
             userInfo.setEmail("example@example.com"); // 사용자 이메일 설정
 
             // 게시물 정보 예시 (임의로 생성)
-            Posts post = new Posts("1", "This is a test post.", new Date(), "user1", 10);
+            Posts post = new Posts("1", "This is a test post.", new Date(), "user1", 10, "해시태그", "USER1");
 
             PostDetailView frame = new PostDetailView(post, userInfo);
             frame.setVisible(true);
