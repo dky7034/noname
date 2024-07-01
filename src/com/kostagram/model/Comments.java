@@ -1,52 +1,39 @@
 package com.kostagram.model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Comments {
-    private String commentId;
+    private int id;
     private String commentContent;
-    private Date createDate;
-    private String postId;
     private String userId;
+    private String postId;
+    private Timestamp createDate;
 
-    public String getCommentId() {
-        return commentId;
+    public Comments(int id, String commentContent, String userId, String postId, Timestamp createDate) {
+        this.id = id;
+        this.commentContent = commentContent;
+        this.userId = userId;
+        this.postId = postId;
+        this.createDate = createDate;
     }
 
-    public void setCommentId(String commentId) {
-        this.commentId = commentId;
+    public int getId() {
+        return id;
     }
 
     public String getCommentContent() {
         return commentContent;
     }
 
-    public void setCommentContent(String commentContent) {
-        this.commentContent = commentContent;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public String getUserId() {
+        return userId;
     }
 
     public String getPostId() {
         return postId;
     }
 
-    public void setPostId(String postId) {
-        this.postId = postId;
+    public Timestamp getCreateDate() {
+        return createDate;
     }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
 }

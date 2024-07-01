@@ -4,32 +4,37 @@ import com.kostagram.controller.CommentController;
 import com.kostagram.controller.LoginController;
 import com.kostagram.model.CommentDao;
 import com.kostagram.model.Users;
+import com.kostagram.model.Comments;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.util.List;
 
 public class CommentView extends JFrame {
     private JPanel mainPanel = new JPanel();
     private JScrollPane scrollPane = new JScrollPane(mainPanel);
     private JButton commentAddBtn = new JButton();
     private JTextField textField = new JTextField();
+    private Users user;
+    private CommentController commentController;
+    private CommentDao commentDao;
+
     protected static final Font font = new Font("맑은 고딕", Font.BOLD, 12);
     protected static final Color bgColor = new Color(38, 41, 46);
-    public static Users user;
 
-    public CommentView(CommentController commentController) {
-        setTitle("댓글 작성");
+    public CommentView() {
+        user = LoginController.users;  // user 초기화
+
+        setTitle("Comment");
         setSize(450, 920);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        user = LoginController.users;
 
-        // 메인 패널 설정
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(bgColor);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        // 상단 패널 설정
         JPanel topPanel = new JPanel();
         topPanel.setBackground(bgColor);
         topPanel.setPreferredSize(new Dimension(450, 35));
@@ -38,50 +43,74 @@ public class CommentView extends JFrame {
         titleLabel.setForeground(Color.white);
         topPanel.add(titleLabel);
 
-        // 하단 패널 설정
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setPreferredSize(new Dimension(450, 45));
         bottomPanel.setBackground(bgColor);
 
-        // 사용자 이미지
         JLabel userImageLabel = new JLabel();
-        ImageIcon userIcon = new ImageIcon("src/com/kostagram/icon/user.png");
-        userImageLabel.setIcon(userIcon);
+        ImageIcon userIcon = createImageIcon("user.png");
+        if (userIcon != null) {
+            userImageLabel.setIcon(userIcon);
+        } else {
+            userImageLabel.setText("No Image");
+        }
 
-        // 텍스트 필드 설정
         textField.setBackground(bgColor);
         textField.setForeground(Color.white);
         textField.setPreferredSize(new Dimension(230, 20));
 
-        // 댓글 추가 버튼 설정
-        ImageIcon commentAddIcon = new ImageIcon("src/com/kostagram/icon/add_comment.png");
-        commentAddBtn.setIcon(commentAddIcon);
+        ImageIcon commentAddIcon = createImageIcon("add_comment.png");
+        if (commentAddIcon != null) {
+            commentAddBtn.setIcon(commentAddIcon);
+        } else {
+            commentAddBtn.setText("Add");
+        }
         commentAddBtn.setContentAreaFilled(false);
         commentAddBtn.setBorderPainted(false);
         commentAddBtn.setPreferredSize(new Dimension(30, 24));
+
         bottomPanel.add(userImageLabel, BorderLayout.WEST);
         bottomPanel.add(textField, BorderLayout.CENTER);
         bottomPanel.add(commentAddBtn, BorderLayout.EAST);
 
-        // 레이아웃 설정
         setLayout(new BorderLayout());
         add(topPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // 댓글 추가 버튼 리스너 등록
-        commentAddBtn.addActionListener(e -> {
-            String commentText = textField.getText();
-            if (!commentText.isEmpty()) {
-                commentController.addComment(commentText);
-                textField.setText(""); // 댓글 입력 필드 초기화
+        // CommentController 초기화
+        commentDao = CommentDao.getInstance();
+        String postId = "samplePostId";  // 실제 포스트 ID로 변경
+        commentController = new CommentController(commentDao, this, postId, user);
+
+        // 기존 댓글 불러오기
+        displayComments();
+
+        // 댓글 추가 버튼 리스너
+        commentAddBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String content = textField.getText();
+                if (!content.trim().isEmpty()) {
+                    commentController.addComment(content);
+                    textField.setText("");
+                    displayComments();  // 새로운 댓글을 포함하여 댓글 목록 갱신
+                }
             }
         });
 
         setVisible(true);
     }
 
-    public CommentView() {}
+    private static ImageIcon createImageIcon(String path) {
+        java.net.URL imgURL = CommentView.class.getResource("/com/kostagram/icon/" + path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("파일을 찾을 수 없습니다: " + path);
+            return null;
+        }
+    }
 
     public String getComment() {
         return textField.getText();
@@ -91,11 +120,70 @@ public class CommentView extends JFrame {
         commentAddBtn.addActionListener(listener);
     }
 
+    public void addCommentPanel(Comments comment) {
+        JPanel commentPanel = new JPanel();
+        commentPanel.setLayout(new BorderLayout());
+        commentPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        commentPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        commentPanel.setBackground(new Color(23, 23, 23));
+
+        JPanel userInfoPanel = new JPanel();
+        FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT, 10, 16);
+        userInfoPanel.setLayout(flowLayout);
+        userInfoPanel.setBackground(new Color(23, 23, 23));
+
+        JLabel userImage = new JLabel();
+        ImageIcon icon = createImageIcon("user_image1.png");
+        if (icon != null) {
+            Image scaledImage = icon.getImage().getScaledInstance(26, 26, Image.SCALE_SMOOTH);
+            userImage.setIcon(new ImageIcon(scaledImage));
+        } else {
+            userImage.setText("No Image");
+        }
+
+        JLabel userId = new JLabel(comment.getUserId());
+        userId.setForeground(Color.WHITE);
+        JLabel postTime = new JLabel(comment.getCreateDate().toString());
+        postTime.setForeground(Color.LIGHT_GRAY);
+
+        userInfoPanel.add(userImage);
+        userInfoPanel.add(userId);
+        userInfoPanel.add(Box.createHorizontalStrut(10));
+        userInfoPanel.add(postTime);
+
+        JTextArea commentTextArea = new JTextArea();
+        commentTextArea.setLineWrap(true);
+        commentTextArea.setWrapStyleWord(true);
+        commentTextArea.setEditable(false);
+        commentTextArea.setBackground(new Color(23, 23, 23));
+        commentTextArea.setForeground(Color.WHITE);
+        commentTextArea.setText(comment.getCommentContent());
+
+        commentTextArea.setSize(new Dimension(350, commentTextArea.getPreferredSize().height));
+        commentTextArea.setPreferredSize(new Dimension(350, commentTextArea.getPreferredSize().height));
+
+        commentPanel.add(userInfoPanel, BorderLayout.NORTH);
+        commentPanel.add(commentTextArea, BorderLayout.CENTER);
+
+        mainPanel.add(commentPanel);
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
+
+    public void displayComments() {
+        mainPanel.removeAll();
+        List<Comments> comments = commentController.getComments();
+        for (Comments comment : comments) {
+            addCommentPanel(comment);
+        }
+    }
+
     public static void main(String[] args) {
-        Users user = new Users(); // 사용자 정보 설정
-        user.setUserId("testUser");
-        CommentDao commentDao = CommentDao.getInstance();
-        CommentController commentController = new CommentController(null, commentDao, "postId", user);
-        new CommentView(commentController);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new CommentView().setVisible(true);
+            }
+        });
     }
 }
