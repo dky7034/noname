@@ -10,6 +10,9 @@ import java.awt.event.ActionListener;
 import java.util.regex.Pattern;
 
 
+/*
+    로그인과 관련된 기능을 담당하는 컨트롤러
+ */
 public class LoginController {
     private LoginView loginView;
     private UserDao userDao;

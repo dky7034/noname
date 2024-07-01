@@ -4,10 +4,10 @@ import java.util.Date;
 
 public class Comments {
     private String commentId;
+    private String commentContent;
+    private Date createDate;
     private String postId;
     private String userId;
-    private String content;
-    private Date createDate;
 
     public String getCommentId() {
         return commentId;
@@ -15,6 +15,22 @@ public class Comments {
 
     public void setCommentId(String commentId) {
         this.commentId = commentId;
+    }
+
+    public String getCommentContent() {
+        return commentContent;
+    }
+
+    public void setCommentContent(String commentContent) {
+        this.commentContent = commentContent;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public String getPostId() {
@@ -33,19 +49,4 @@ public class Comments {
         this.userId = userId;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
 }

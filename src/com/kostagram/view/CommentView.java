@@ -1,53 +1,101 @@
 package com.kostagram.view;
 
-import com.kostagram.model.Comments;
+import com.kostagram.controller.CommentController;
+import com.kostagram.controller.LoginController;
+import com.kostagram.model.CommentDao;
+import com.kostagram.model.Users;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class CommentView extends JFrame {
+    private JPanel mainPanel = new JPanel();
+    private JScrollPane scrollPane = new JScrollPane(mainPanel);
+    private JButton commentAddBtn = new JButton();
+    private JTextField textField = new JTextField();
+    protected static final Font font = new Font("맑은 고딕", Font.BOLD, 12);
+    protected static final Color bgColor = new Color(38, 41, 46);
+    public static Users user;
 
-    public ArrayList<JPanel> loadComment () {
-        ArrayList<JPanel> commentList = new ArrayList<JPanel>();
-
-        /*
-        1.리스트 생성
-        2. 테이블 조회
-        3. 조회한 데이터를 바탕으로 comment 객체 생성
-        4. 생성한 객체를 넣을 패널 생성
-        5. 패널을 뷰에 배치
-        6. 다음 데이터 조회 후 반복
-         */
-        return commentList;
-    }
-    // 댓글 화면의 타이틀
-    private JLabel commentTitle = new JLabel("Comment");
-    // 댓글들을 출력할 TextArea
-    private JTextArea commentArea = new JTextArea(5, 30);
-    // 하단 패널에 들어갈 프로필 이미지, 버튼
-    private JLabel profileImage = new JLabel("image");
-    private JTextField commentText = new JTextField();
-    private JButton commentAddButton = new JButton("ADD");
-
-
-
-    public CommentView() {
-        setTitle("Comment");
+    public CommentView(CommentController commentController) {
+        setTitle("댓글 작성");
         setSize(450, 920);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        user = LoginController.users;
 
+        // 메인 패널 설정
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBackground(bgColor);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
+        // 상단 패널 설정
+        JPanel topPanel = new JPanel();
+        topPanel.setBackground(bgColor);
+        topPanel.setPreferredSize(new Dimension(450, 35));
+        JLabel titleLabel = new JLabel("댓글");
+        titleLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        titleLabel.setForeground(Color.white);
+        topPanel.add(titleLabel);
+
+        // 하단 패널 설정
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.setPreferredSize(new Dimension(450, 45));
+        bottomPanel.setBackground(bgColor);
+
+        // 사용자 이미지
+        JLabel userImageLabel = new JLabel();
+        ImageIcon userIcon = new ImageIcon("src/com/kostagram/icon/user.png");
+        userImageLabel.setIcon(userIcon);
+
+        // 텍스트 필드 설정
+        textField.setBackground(bgColor);
+        textField.setForeground(Color.white);
+        textField.setPreferredSize(new Dimension(230, 20));
+
+        // 댓글 추가 버튼 설정
+        ImageIcon commentAddIcon = new ImageIcon("src/com/kostagram/icon/add_comment.png");
+        commentAddBtn.setIcon(commentAddIcon);
+        commentAddBtn.setContentAreaFilled(false);
+        commentAddBtn.setBorderPainted(false);
+        commentAddBtn.setPreferredSize(new Dimension(30, 24));
+        bottomPanel.add(userImageLabel, BorderLayout.WEST);
+        bottomPanel.add(textField, BorderLayout.CENTER);
+        bottomPanel.add(commentAddBtn, BorderLayout.EAST);
+
+        // 레이아웃 설정
+        setLayout(new BorderLayout());
+        add(topPanel, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
+        add(bottomPanel, BorderLayout.SOUTH);
+
+        // 댓글 추가 버튼 리스너 등록
+        commentAddBtn.addActionListener(e -> {
+            String commentText = textField.getText();
+            if (!commentText.isEmpty()) {
+                commentController.addComment(commentText);
+                textField.setText(""); // 댓글 입력 필드 초기화
+            }
+        });
+
+        setVisible(true);
     }
 
+    public CommentView() {}
+
     public String getComment() {
-        return commentArea.getText();
+        return textField.getText();
     }
 
     public void addCommentListener(ActionListener listener) {
-        commentAddButton.addActionListener(listener);
+        commentAddBtn.addActionListener(listener);
     }
 
+    public static void main(String[] args) {
+        Users user = new Users(); // 사용자 정보 설정
+        user.setUserId("testUser");
+        CommentDao commentDao = CommentDao.getInstance();
+        CommentController commentController = new CommentController(null, commentDao, "postId", user);
+        new CommentView(commentController);
+    }
 }
