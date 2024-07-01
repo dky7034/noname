@@ -23,7 +23,7 @@ public class MyPageView extends JFrame{
     private JScrollPane scrollPane;
     private BottomPanel bottomPanel; // 화면 하단 패널(버튼 4개)
     private Font font = new Font("맑은 고딕", Font.BOLD, 16);
-    private Users userInfo;
+    public Users userInfo;
 
     public MyPageView(Users userInfo) {
         this.userInfo = userInfo;
@@ -98,7 +98,7 @@ public class MyPageView extends JFrame{
         resultsPanel.setLayout(new GridLayout(0, 3, 20, 20)); // 3열 그리드 레이아웃, 간격 설정
         resultsPanel.setBackground(Color.black); // 결과 패널 배경 색상 설정
         //email로 post가져오기
-        List<Posts> postsList = myPageDao.searchPostsByUserEmail(userInfo.getEmail());
+        List<Posts> postsList = myPageDao.searchPostsByUserId(userInfo.getUserId());
         displayPosts(postsList);
 
         // JScrollPane을 사용하여 결과 패널을 스크롤 가능하게 설정
@@ -122,7 +122,7 @@ public class MyPageView extends JFrame{
 
     private void showPostDetail(Posts post) {
         EventQueue.invokeLater(() -> {
-            PostDetailView postDetailView = new PostDetailView(post.getPostId(), userInfo);
+            PostDetailView postDetailView = new PostDetailView(post, userInfo);
             postDetailView.setVisible(true);
         });
     }
