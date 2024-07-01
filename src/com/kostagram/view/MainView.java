@@ -6,21 +6,15 @@ import com.kostagram.model.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
 import java.util.List;
 
 public class MainView extends JFrame {
-    private DefaultListModel<Posts> listModel; // 포스트들을 담는 리스트 모델
-    private JList<Posts> list; // 포스트들을 보여줄 JList
-    private JScrollPane scrollPane; // 리스트를 스크롤할 수 있도록 하는 JScrollPane
-    private boolean loading = false; // 데이터 로딩 중 여부를 나타내는 플래그
-    private boolean allDataLoaded = false; // 추가 데이터가 더 이상 없는지 확인하기 위한 변수
-
+    private JPanel postsPanel; // 포스트들을 담는 패널
+    private JScrollPane scrollPane; // 패널을 스크롤할 수 있도록 하는 JScrollPane
     protected static final Font kostagramFont = new Font("맑은 고딕", Font.BOLD, 20);
     protected static final Font titleFont = new Font("맑은 고딕", Font.BOLD, 16); // 글꼴 설정
     protected static final Font contentFont = new Font("맑은 고딕", Font.PLAIN, 14); // 내용 글꼴 설정
-
     protected static final Color bgColor = Color.BLACK; // 배경 색 설정
     protected static final Color fgColor = Color.WHITE; // 글자 색 설정
 
@@ -48,18 +42,16 @@ public class MainView extends JFrame {
         topPanel.add(titleLabel); // 상단 패널에 제목 라벨 추가
         topPanel.add(Box.createHorizontalGlue()); // 상단 패널에 수평 글루 추가 (라벨 오른쪽 정렬)
 
-        // 리스트 모델 및 리스트
-        listModel = new DefaultListModel<>(); // 리스트 모델 초기화
-        list = new JList<>(listModel); // 리스트 초기화
-        list.setCellRenderer(new PostRenderer()); // 리스트의 렌더러 설정
-
-        // 스크롤 페인
-        scrollPane = new JScrollPane(list); // 리스트를 담는 스크롤 페인 초기화
+        // 포스트 패널 및 스크롤 페인
+        postsPanel = new JPanel(); // 포스트 패널 초기화
+        postsPanel.setLayout(new BoxLayout(postsPanel, BoxLayout.Y_AXIS)); // 포스트 패널 레이아웃 설정
+        postsPanel.setBackground(bgColor); // 포스트 패널 배경 색 설정
+        scrollPane = new JScrollPane(postsPanel); // 포스트 패널을 담는 스크롤 페인 초기화
         JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar(); // 수직 스크롤 바 가져오기
         verticalScrollBar.setUI(new PrettyScrollBar()); // 스크롤 바 UI 커스터마이징
         scrollPane.setBackground(bgColor); // 스크롤 페인 배경 색 설정
         scrollPane.setBorder(null); // 스크롤 페인 경계선 제거
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); //좌우 스크롤 막기
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // 좌우 스크롤 막기
 
         // 하단 패널
         bottomPanel = new BottomPanel(); // 하단 패널 초기화
@@ -80,129 +72,119 @@ public class MainView extends JFrame {
     }
 
     public void setPosts(List<Posts> posts) {
-        listModel.clear(); // 리스트 모델 초기화
+        postsPanel.removeAll(); // 포스트 패널 초기화
         for (Posts post : posts) {
-            listModel.addElement(post); // 리스트 모델에 포스트 추가
+            postsPanel.add(createPostPanel(post)); // 포스트 패널에 포스트 추가
         }
-    }
-
-    public DefaultListModel<Posts> getListModel() {
-        return listModel; // 리스트 모델 반환
+        postsPanel.revalidate(); // 포스트 패널 갱신
+        postsPanel.repaint(); // 포스트 패널 다시 그리기
     }
 
     private void loadPost() {
         SwingUtilities.invokeLater(() -> {
             List<Posts> posts = postDao.getPosts(); // 데이터베이스에서 실제 데이터를 가져옴
             if (posts != null && !posts.isEmpty()) {
-                for (Posts post : posts) {
-                    listModel.addElement(post); // 리스트 모델에 포스트 추가
-                }
-            } else {
-                allDataLoaded = true; // 데이터가 더 이상 없을 경우 로드 중지
+                setPosts(posts); // 포스트 설정
             }
-            loading = false; // 데이터 로딩 완료 설정
         });
     }
 
-    private static class PostRenderer extends DefaultListCellRenderer { // 커스텀 리스트 셀 렌더러 클래스
-        @Override
-        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            Posts post = (Posts) value; // 포스트 객체 가져오기
-            JPanel panel = new JPanel(); // 패널 생성
-            panel.setLayout(new GridBagLayout()); // 패널 레이아웃 설정
-            GridBagConstraints gbc = new GridBagConstraints(); // GridBagConstraints 객체 생성
-            panel.setBackground(bgColor); // 패널 배경 색 설정
-            panel.setSize(440, 150);
-            //panel.setPreferredSize(new Dimension(450, Integer.MAX_VALUE)); // 패널 크기 설정
-            panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // 패널 경계선 설정
+    private JPanel createPostPanel(Posts post) {
+        JPanel panel = new JPanel(); // 패널 생성
+        panel.setLayout(new GridBagLayout()); // 패널 레이아웃 설정
+        GridBagConstraints gbc = new GridBagConstraints(); // GridBagConstraints 객체 생성
+        panel.setBackground(bgColor); // 패널 배경 색 설정
+        panel.setSize(440, 150);
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // 패널 경계선 설정
 
-            JLabel userLabel = new JLabel(post.getUserName()); // 사용자 이름 라벨 생성
-            userLabel.setFont(titleFont); // 사용자 이름 라벨 글꼴 설정
-            userLabel.setForeground(fgColor); // 사용자 이름 라벨 글자 색 설정
-            userLabel.setPreferredSize(new Dimension(panel.getWidth(), 40)); // 사용자 이름 라벨 크기 설정
+        JLabel userLabel = new JLabel(post.getUserName()); // 사용자 이름 라벨 생성
+        userLabel.setFont(titleFont); // 사용자 이름 라벨 글꼴 설정
+        userLabel.setForeground(fgColor); // 사용자 이름 라벨 글자 색 설정
+        userLabel.setPreferredSize(new Dimension(panel.getWidth(), 40)); // 사용자 이름 라벨 크기 설정
 
-            JTextArea contentTextArea = new JTextArea(5,10); // 게시글내용 라벨 생성 // 게시글내용 라벨 글꼴 설정
-            contentTextArea.setWrapStyleWord(true); // 단어 단위로 줄바꿈 활성화
-            contentTextArea.setLineWrap(true); // 텍스트 영역이 행 넘침 시 자동 줄 바꿈 설정
-            contentTextArea.setPreferredSize(new Dimension(panel.getWidth(), 30)); // 게시글내용 라벨 크기 설정
-            contentTextArea.setForeground(fgColor); // 게시글내용 라벨 글자 색 설정
-            contentTextArea.setBackground(bgColor);
-            contentTextArea.setFont(contentFont);
-            contentTextArea.append(post.getPostContent());
-            contentTextArea.repaint();
+        JTextArea contentTextArea = new JTextArea(5, 10); // 게시글내용 라벨 생성
+        contentTextArea.setWrapStyleWord(true); // 단어 단위로 줄바꿈 활성화
+        contentTextArea.setLineWrap(true); // 텍스트 영역이 행 넘침 시 자동 줄 바꿈 설정
+        contentTextArea.setPreferredSize(new Dimension(panel.getWidth(), 30)); // 게시글내용 라벨 크기 설정
+        contentTextArea.setForeground(fgColor); // 게시글내용 라벨 글자 색 설정
+        contentTextArea.setBackground(bgColor);
+        contentTextArea.setFont(contentFont);
+        contentTextArea.append(post.getPostContent());
+        contentTextArea.repaint();// 게시글 내용을 수정할 수 없도록 설정
 
-            // 좋아요 및 댓글 수
-            JPanel panel1 = new JPanel(); // 좋아요 및 댓글 수 패널 생성
-            panel1.setLayout(new GridBagLayout()); // 좋아요 및 댓글 수 패널 레이아웃 설정
-            GridBagConstraints gbc1 = new GridBagConstraints(); // GridBagConstraints 객체 생성
-            panel1.setBackground(bgColor); // 좋아요 및 댓글 수 패널 배경 색 설정
-            panel1.setPreferredSize(new Dimension(panel.getWidth(), 40)); // 좋아요 및 댓글 수 패널 크기 설정
-            JButton likeButton = createIconButton("like_false"); // 좋아요 버튼 생성
-            JButton commentButton = createIconButton("comment"); // 댓글 버튼 생성
+        // 좋아요 및 댓글 수
+        JButton likeButton = createIconButton("like"); // 좋아요 버튼 생성
+        JButton commentButton = createIconButton("comment"); // 댓글 버튼 생성
 
-            // 댓글 버튼에 액션 리스너 추가
-            commentButton.addActionListener(e -> {
-                CommentView commentView = new CommentView(); // 댓글 뷰 생성
-                CommentController commentController = new CommentController(commentView, CommentDao.getInstance(), post.getPostId(), LoginController.users); // 댓글 컨트롤러 생성
-                commentView.setVisible(true); // 댓글 뷰 보이기 설정
-            });
+        // 좋아요 버튼에 액션 리스너 추가
+        likeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Liked post: " + post.getPostId());
+            }
+        });
 
-            // 좋아요 라벨
-            JLabel likeLabel = new JLabel(); // 좋아요 라벨 생성
-            likeLabel.setFont(contentFont); // 좋아요 라벨 글꼴 설정
-            likeLabel.setText(post.getLikesCount() + "명이 좋아합니다."); // 좋아요 라벨 텍스트 설정
-            likeLabel.setForeground(fgColor); // 좋아요 라벨 글자 색 설정
-            likeLabel.setPreferredSize(new Dimension(panel.getWidth(), 20)); // 좋아요 라벨 크기 설정
+        // 댓글 버튼에 액션 리스너 추가
+        commentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CommentView commentView = new CommentView(new CommentController()); // 댓글 보기 창 열기
+                commentView.setVisible(true);
+            }
+        });
 
-            // 댓글 수 라벨
-            JLabel commentCountLabel = new JLabel("댓글 " + post.getCommentsCount() + "개"); // 댓글 수 라벨 생성
-            commentCountLabel.setFont(contentFont); // 댓글 수 라벨 글꼴 설정
-            commentCountLabel.setForeground(fgColor); // 댓글 수 라벨 글자 색 설정
-            commentCountLabel.setPreferredSize(new Dimension(panel.getWidth(), 20)); // 댓글 수 라벨 크기 설정
-            commentCountLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // 댓글 수 라벨 커서 설정
+        // 좋아요 라벨
+        JLabel likeLabel = new JLabel(); // 좋아요 라벨 생성
+        likeLabel.setFont(contentFont); // 좋아요 라벨 글꼴 설정
+        likeLabel.setText(post.getLikesCount() + "명이 좋아합니다."); // 좋아요 라벨 텍스트 설정
+        likeLabel.setForeground(fgColor); // 좋아요 라벨 글자 색 설정
+        likeLabel.setPreferredSize(new Dimension(panel.getWidth(), 20)); // 좋아요 라벨 크기 설정
 
-            // 댓글 수 라벨에 액션 리스너 추가
-            commentCountLabel.addMouseListener(new MouseAdapter() { // 마우스 리스너 추가
-                public void mouseClicked(MouseEvent evt) {
-                    CommentView commentView = new CommentView(); // 댓글 뷰 생성
-                    CommentController commentController = new CommentController(commentView, CommentDao.getInstance(), post.getPostId(), LoginController.users); // 댓글 컨트롤러 생성
-                    commentView.setVisible(true); // 댓글 뷰 보이기 설정
-                }
-            });
+        // 댓글 수 라벨
+        JLabel commentCountLabel = new JLabel("댓글 " + post.getCommentsCount() + "개"); // 댓글 수 라벨 생성
+        commentCountLabel.setFont(contentFont); // 댓글 수 라벨 글꼴 설정
+        commentCountLabel.setForeground(fgColor); // 댓글 수 라벨 글자 색 설정
+        commentCountLabel.setPreferredSize(new Dimension(panel.getWidth(), 20)); // 댓글 수 라벨 크기 설정
+        commentCountLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // 댓글 수 라벨 커서 설정
 
+        gbc.insets = new Insets(0, 0, 5, 0); // 여백 설정
+        gbc.gridx = 0; // 그리드 x 위치 설정
+        gbc.gridy = 0; // 그리드 y 위치 설정
+        gbc.gridwidth = 2; // 그리드 폭 설정
+        gbc.fill = GridBagConstraints.HORIZONTAL; // 크기 조절 설정
+        panel.add(userLabel, gbc); // 패널에 사용자 이름 라벨 추가
 
-            // 위치 설정
-            gbc1.insets = new Insets(0, 0, 0, 0); // 여백 설정
-            gbc1.gridx = 0; // 그리드 x 위치 설정
-            gbc1.gridy = 0; // 그리드 y 위치 설정
-            gbc1.fill = GridBagConstraints.NONE; // 크기 조절 설정
-            gbc1.anchor = GridBagConstraints.EAST; // 앵커 설정
-            panel1.add(likeButton, gbc1); // 좋아요 버튼 추가
-            gbc1.gridx++; // 그리드 x 위치 설정
-            panel1.add(commentButton, gbc1); // 댓글 버튼 추가
-            gbc1.gridx++; // 그리드 x 위치 설정
-            gbc1.weightx = 1.0; // 가중치 설정
-            gbc1.fill = GridBagConstraints.HORIZONTAL; // 크기 조절 설정
-            panel1.add(new JLabel(), gbc1); // 빈 라벨 추가
-            gbc.insets = new Insets(0, 0, 0, 0); // 여백 설정
-            gbc.weightx = 1.0; // 가중치 설정
-            gbc.fill = GridBagConstraints.HORIZONTAL; // 크기 조절 설정
-            gbc.gridx = 0; // 그리드 x 위치 설정
-            gbc.gridy = 0; // 그리드 y 위치 설정
-            panel.add(userLabel, gbc); // 사용자 이름 라벨 추가
-            gbc.gridy++; // 그리드 y 위치 설정
-            panel.add(contentTextArea, gbc);
-            gbc.gridy++; // 그리드 y 위치 설정
-            panel.add(panel1, gbc); // 좋아요 및 댓글 수 패널 추가
-            gbc.gridy++; // 그리드 y 위치 설정
-            panel.add(likeLabel, gbc); // 좋아요 라벨 추가
-            gbc.gridy++; // 그리드 y 위치 설정
-            panel.add(commentCountLabel, gbc); // 게시물 내용 라벨 추가
+        gbc.gridy++; // 그리드 y 위치 설정
+        gbc.gridwidth = 2; // 그리드 폭 설정
+        gbc.fill = GridBagConstraints.HORIZONTAL; // 크기 조절 설정
+        panel.add(contentTextArea, gbc); // 패널에 게시글 내용 텍스트 영역 추가
 
-            return panel; // 패널 반환
-        }
+        gbc.gridy++; // 그리드 y 위치 설정
+        gbc.gridwidth = 1; // 그리드 폭 설정
+        gbc.fill = GridBagConstraints.NONE; // 크기 조절 설정
+        gbc.anchor = GridBagConstraints.WEST; // 앵커 설정
+        panel.add(likeButton, gbc); // 패널에 좋아요 버튼 추가
+        gbc.gridx++; // 그리드 x 위치 설정
+        gbc.anchor = GridBagConstraints.WEST; // 앵커 설정
+        panel.add(commentButton, gbc); // 패널에 댓글 버튼 추가
+        gbc.gridx++; // 그리드 x 위치 설정
+        gbc.weightx = 1.0; // 가중치 설정
+        gbc.fill = GridBagConstraints.HORIZONTAL; // 크기 조절 설정
+        panel.add(new JLabel(), gbc); // 빈 라벨 추가
+
+        gbc.gridx = 0; // 그리드 x 위치 설정
+        gbc.gridy++; // 그리드 y 위치 설정
+        gbc.gridwidth = 2; // 그리드 폭 설정
+        gbc.fill = GridBagConstraints.HORIZONTAL; // 크기 조절 설정
+        panel.add(likeLabel, gbc); // 패널에 좋아요 라벨 추가
+
+        gbc.gridy++; // 그리드 y 위치 설정
+        gbc.gridwidth = 2; // 그리드 폭 설정
+        gbc.fill = GridBagConstraints.HORIZONTAL; // 크기 조절 설정
+        panel.add(commentCountLabel, gbc); // 패널에 댓글 수 라벨 추가
+
+        return panel; // 패널 반환
     }
-
 
     public static JButton createIconButton(String name) {
         // 이미지를 로드합니다.
@@ -235,6 +217,6 @@ public class MainView extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(MainView::new); // Swing 애플리케이션을 Event Dispatch Thread에서 실행하여 MainView를 생성합니다.
+        SwingUtilities.invokeLater(Test::new); // Swing 애플리케이션을 Event Dispatch Thread에서 실행하여 MainView를 생성합니다.
     }
 }
