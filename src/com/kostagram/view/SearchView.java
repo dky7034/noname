@@ -13,17 +13,20 @@ import java.awt.event.FocusListener;
 import java.util.List;
 
 public class SearchView extends JFrame {
+    // 검색 필드 초기화 (둥근 모서리, 기본 텍스트 "검색")
     private RoundJTextField searchField = new RoundJTextField(20, Color.gray, Color.gray, "검색");
-    private JPanel resultsPanel;
-    private JPanel searchPanel;
-    private JPanel mainPanel;
-    private JScrollPane scrollPane;
-    private JButton searchButton; // 검색페이지에서 사용하는 검색버튼
+    private JPanel resultsPanel; // 검색 결과를 표시할 패널
+    private JPanel searchPanel; // 검색 입력 및 버튼 패널
+    private JPanel mainPanel; // 메인 패널
+    private JScrollPane scrollPane; // 스크롤 가능한 결과 패널
+    private JButton searchButton; // 검색 버튼
     private BottomPanel bottomPanel; // 화면 하단 패널(버튼 4개)
-    private Font font = new Font("맑은 고딕", Font.BOLD, 16);
-    private Users userInfo = new Users();
+    private Font font = new Font("맑은 고딕", Font.BOLD, 16); // 기본 폰트 설정
+    private Users userInfo; // 사용자 정보 객체
 
-    public SearchView() {
+    public SearchView(Users userInfo) {
+        this.userInfo = userInfo; // 로그인한 사용자 정보를 인스턴스 변수에 저장
+
         // JFrame 기본 설정
         setTitle("Search"); // 창 제목 설정
         setSize(475, 950); // 프레임 크기 설정
@@ -99,7 +102,7 @@ public class SearchView extends JFrame {
 
         // 검색 결과 표시 패널 설정
         resultsPanel = new JPanel();
-        resultsPanel.setLayout(new GridLayout(0, 3, 20, 20)); // 3열 그리드 레이아웃, 간격 설정
+        resultsPanel.setLayout(new GridLayout(0, 3, 10, 10)); // 3열 그리드 레이아웃, 간격 설정
         resultsPanel.setBackground(Color.black); // 결과 패널 배경 색상 설정
 
         // JScrollPane을 사용하여 결과 패널을 스크롤 가능하게 설정
@@ -132,20 +135,16 @@ public class SearchView extends JFrame {
     }
 
     // 검색 기능 관련 코드
-    public String getSearchText() {
-        return searchField.getText();
-    }
-
     public void displayPosts(List<Posts> posts) {
         resultsPanel.removeAll();
         if (posts.isEmpty()) {
-            JLabel noResultsLabel = new JLabel("검색 결과가 없습니다.");
-            noResultsLabel.setForeground(Color.WHITE);
-            resultsPanel.add(noResultsLabel);
+            // 검색 결과가 없으면 다이얼로그 표시
+            JOptionPane.showMessageDialog(this, "검색 결과가 없습니다.", "알림", JOptionPane.INFORMATION_MESSAGE);
         } else {
             for (Posts post : posts) {
                 JPanel postPanel = createPostPanel(post);
                 resultsPanel.add(postPanel);
+                // 검색 결과 패널을 클릭하면 상세 페이지로 이동
                 postPanel.addMouseListener(new java.awt.event.MouseAdapter() {
                     public void mouseClicked(java.awt.event.MouseEvent evt) {
                         showPostDetail(post);
@@ -153,24 +152,26 @@ public class SearchView extends JFrame {
                 });
             }
         }
-        resultsPanel.revalidate();
-        resultsPanel.repaint();
+        resultsPanel.revalidate(); // 결과 패널 재검증
+        resultsPanel.repaint(); // 결과 패널 다시 그리기
     }
 
-
+    // 검색 결과 게시물 클릭 시 상세 페이지 표시
     private void showPostDetail(Posts post) {
         EventQueue.invokeLater(() -> {
-            PostDetailView postDetailView = new PostDetailView(post.getPostId(), userInfo);
+            PostDetailView postDetailView = new PostDetailView(post, userInfo);
             postDetailView.setVisible(true);
         });
     }
 
+    // 게시물 패널 생성
     private JPanel createPostPanel(Posts post) {
         JPanel postPanel = new JPanel();
         postPanel.setLayout(new BorderLayout());
-        postPanel.setBackground(Color.white); // 패널 배경색 설정
+        postPanel.setBackground(Color.LIGHT_GRAY); // 패널 배경색 설정
         postPanel.setPreferredSize(new Dimension(120, 120)); // 패널 크기 고정
-        postPanel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1)); // 테두리 설정
+//        postPanel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1)); // 테두리 설정
+        postPanel.setBorder(BorderFactory.createEmptyBorder());
 
         JLabel postIdLabel = new JLabel("게시물 ID: " + post.getPostId());
         postIdLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
@@ -195,8 +196,6 @@ public class SearchView extends JFrame {
         return postPanel;
     }
 
-
-
     /*
         화면 하단에 공통으로 들어가는 버튼들 (홈, 검색, 게시물 작성, 유저페이지)
         액션리스너 추가
@@ -219,7 +218,12 @@ public class SearchView extends JFrame {
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
-            SearchView frame = new SearchView(); // SearchView 인스턴스 생성
+            // 사용자 정보 예시 (임의로 생성)
+            Users userInfo = new Users();
+            userInfo.setUserId("사용자 ID"); // 사용자 ID 설정
+            userInfo.setEmail("example@example.com"); // 사용자 이메일 설정
+
+            SearchView frame = new SearchView(userInfo); // SearchView 인스턴스 생성 및 사용자 정보 전달
             SearchDao searchDao = SearchDao.getInstance();
             SearchController controller = new SearchController(frame, searchDao);
             frame.setVisible(true); // 창을 보이게 설정

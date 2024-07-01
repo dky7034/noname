@@ -24,7 +24,7 @@ public class MainView extends JFrame {
 
     private BottomPanel bottomPanel; // BottomPanel 클래스 사용
     private PostDao postDao; // 데이터베이스 접근 객체(Posts)
-    public static Users user; // 현재 로그인한 사용자
+    private Users user; // 현재 로그인한 사용자
 
     public MainView() {
         setTitle("Main"); // 프레임 제목 설정

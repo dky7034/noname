@@ -46,7 +46,7 @@ public class MainController {
 
     class SearchBtnListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            SearchView searchView = new SearchView();
+            SearchView searchView = new SearchView(userInfo);
             SearchController searchController = new SearchController(searchView, SearchDao.getInstance());
             searchView.setVisible(true);
         }
@@ -60,6 +60,7 @@ public class MainController {
         }
     };
 
+    // 마이페이지 이동 버튼
     class UserBtnListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // UserView userView = new UserView();  // UserView가 구현되어 있다면 주석을 풀고 사용
