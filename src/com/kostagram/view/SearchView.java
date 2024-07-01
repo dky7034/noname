@@ -83,6 +83,7 @@ public class SearchView extends JFrame {
                     searchField.setForeground(Color.LIGHT_GRAY); // 입력 글자색 지정
                 }
             }
+
             // 포커스가 사라지면 필드에 "검색" 글자 추가
             @Override
             public void focusLost(FocusEvent e) {
@@ -102,7 +103,7 @@ public class SearchView extends JFrame {
 
         // 검색 결과 표시 패널 설정
         resultsPanel = new JPanel();
-        resultsPanel.setLayout(new GridLayout(0, 3, 10, 10)); // 3열 그리드 레이아웃, 간격 설정
+        resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS)); // 수직 박스 레이아웃 사용
         resultsPanel.setBackground(Color.black); // 결과 패널 배경 색상 설정
 
         // JScrollPane을 사용하여 결과 패널을 스크롤 가능하게 설정
@@ -169,13 +170,13 @@ public class SearchView extends JFrame {
         JPanel postPanel = new JPanel();
         postPanel.setLayout(new BorderLayout());
         postPanel.setBackground(Color.LIGHT_GRAY); // 패널 배경색 설정
-        postPanel.setPreferredSize(new Dimension(120, 120)); // 패널 크기 고정
-//        postPanel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1)); // 테두리 설정
-        postPanel.setBorder(BorderFactory.createEmptyBorder());
+        postPanel.setPreferredSize(new Dimension(400, 120)); // 패널 크기 고정
+        postPanel.setMaximumSize(new Dimension(450, 150));
+        postPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // 내부 여백 설정
 
         JLabel postIdLabel = new JLabel("게시물 ID: " + post.getPostId());
         postIdLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-        postIdLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        postIdLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
         JTextArea postContentArea = new JTextArea(post.getPostContent());
         postContentArea.setEditable(false); // 편집 불가능하도록 설정
@@ -185,13 +186,6 @@ public class SearchView extends JFrame {
 
         postPanel.add(postIdLabel, BorderLayout.NORTH);
         postPanel.add(new JScrollPane(postContentArea), BorderLayout.CENTER);
-
-        // 패널 클릭 시 상세 페이지로 이동하는 리스너 추가
-        postPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                showPostDetail(post);
-            }
-        });
 
         return postPanel;
     }
@@ -224,8 +218,7 @@ public class SearchView extends JFrame {
             userInfo.setEmail("example@example.com"); // 사용자 이메일 설정
 
             SearchView frame = new SearchView(userInfo); // SearchView 인스턴스 생성 및 사용자 정보 전달
-            SearchDao searchDao = SearchDao.getInstance();
-            SearchController controller = new SearchController(frame, searchDao);
+            SearchController controller = new SearchController(frame);
             frame.setVisible(true); // 창을 보이게 설정
         });
     }

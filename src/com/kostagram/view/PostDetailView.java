@@ -27,7 +27,7 @@ public class PostDetailView extends JFrame {
         // mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20)); // 내부 여백 설정
 
         if (post != null) {
-            postIdLabel = new JLabel("작성자 Email: " + userInfo.getEmail());
+            postIdLabel = new JLabel("작성자: " + post.getUserName());
             postIdLabel.setFont(new Font("맑은 고딕", Font.BOLD, 16));
             postContentLabel = new JLabel("게시물 내용: " + post.getPostContent());
             postContentLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 14));

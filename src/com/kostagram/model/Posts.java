@@ -10,7 +10,7 @@ public class Posts {
     private String hashTags;
     private String userName;
     private int likesCount;
-    private int commentsCount; // 댓글 수 필드 추가
+    private int commentsCount;
 
     public Posts() {}
 
@@ -22,6 +22,14 @@ public class Posts {
         this.likesCount = likesCount;
         this.hashTags = hashTags;
         this.userName = userName;
+    }
+
+    public Posts(String postId, String content, Date createDate, String userId, int likesCount) {
+        this.postId = postId;
+        this.postContent = content;
+        this.createDate = createDate;
+        this.userId = userId;
+        this.likesCount = likesCount;
     }
 
     public String getUserName() {
@@ -85,12 +93,9 @@ public class Posts {
         this.likesCount = likesCount;
     }
 
-    // Getter and Setter for commentsCount
-    public int getCommentsCount() {
-        return commentsCount;
-    }
+    // Getter and Setter for commentCount
+    public int getCommentsCount() { return commentsCount; }
 
-    public void setCommentsCount(int commentsCount) {
-        this.commentsCount = commentsCount;
-    }
+    public void setCommentsCount(int commentsCount) { this.commentsCount = commentsCount; }
+
 }

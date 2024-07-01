@@ -37,18 +37,23 @@ public class PostDao {
      */
     public void addPost(Posts posts) throws SQLException {
         String sql = "CALL PROC_NEW_POST(?, ?, ?)";
-        //String sql = "INSERT INTO posts(user_id, post_content) VALUES(?, ?)";
 
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            System.out.println(posts.getPostContent()+";"+ posts.getUserId()+";"+ posts.getHashTags());
+            System.out.println("Post Content: " + posts.getPostContent());
+            System.out.println("User ID in PostDao: " + posts.getUserId());
+            System.out.println("Hash Tags: " + posts.getHashTags());
+
             pstmt.setString(1, posts.getPostContent());
             pstmt.setString(2, posts.getUserId());
             pstmt.setString(3, posts.getHashTags());
             pstmt.executeUpdate();
+
+            System.out.println("게시글 추가 성공");
+        } catch (SQLException e) {
+            System.out.println("SQL 예외 발생: " + e.getMessage());
+            throw e; // 예외를 다시 던져서 호출한 메서드에서도 예외를 처리할 수 있게 합니다.
         }
-        System.out.println("sql = " + sql);
-        System.out.println("게시글 추가 성공");
     }
 
     /**
@@ -56,10 +61,9 @@ public class PostDao {
      * @return 게시글 목록
      */
     public List<Posts> getPosts() {
-//        String sql = "SELECT post_id, user_id, post_content, create_date FROM posts";
-        String sql = "SELECT P.POST_ID, P.USER_ID,(SELECT SUBSTR(U.USER_EMAIL, 0, INSTR(U.USER_EMAIL, '@')-1) from USERS U where U.USER_ID = P.USER_ID) AS USER_NAME, P.POST_CONTENT, P.CREATE_DATE,"
-                + " (SELECT COUNT(*) FROM COMMENTS C WHERE C.POST_ID = P.POST_ID) AS COMMENT_COUNT "
-                + " FROM POSTS P";
+        String sql = "SELECT P.POST_ID, P.USER_ID, (SELECT SUBSTR(U.USER_EMAIL, 0, INSTR(U.USER_EMAIL, '@')-1) FROM USERS U WHERE U.USER_ID = P.USER_ID) AS USER_NAME, P.POST_CONTENT, P.CREATE_DATE, "
+                + "(SELECT COUNT(*) FROM COMMENTS C WHERE C.POST_ID = P.POST_ID) AS COMMENT_COUNT "
+                + "FROM POSTS P";
         List<Posts> posts = new ArrayList<>();
 
         try (Connection conn = ConnectionProvider.getConnection();
@@ -70,7 +74,7 @@ public class PostDao {
                 Posts post = new Posts();
                 post.setPostId(rs.getString("POST_ID"));
                 post.setUserId(rs.getString("USER_ID"));
-                post.setPostContent(rs.getString("USER_NAME"));
+                post.setUserName(rs.getString("USER_NAME"));
                 post.setPostContent(rs.getString("POST_CONTENT"));
                 post.setCreateDate(rs.getDate("CREATE_DATE"));
                 post.setCommentsCount(rs.getInt("COMMENT_COUNT")); // 댓글 수 설정
@@ -78,7 +82,7 @@ public class PostDao {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQL 예외 발생: " + e.getMessage());
         }
         return posts;
     }
