@@ -122,7 +122,7 @@ public class MyPageView extends JFrame{
 
     private void showPostDetail(Posts post) {
         EventQueue.invokeLater(() -> {
-            PostDetailView postDetailView = new PostDetailView(post.getPostId(), userInfo);
+            PostDetailView postDetailView = new PostDetailView(post, userInfo);
             postDetailView.setVisible(true);
         });
     }

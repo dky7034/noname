@@ -12,7 +12,7 @@ public class ConnectionProvider {
     public static Connection getConnection() {
         Connection conn = null;
         String url = "jdbc:oracle:thin:@localhost:1521:XE";
-        String username = "C##NONAME";
+        String username = "noname";
         String password = "noname";
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");

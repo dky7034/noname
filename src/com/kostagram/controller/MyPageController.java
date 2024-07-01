@@ -36,8 +36,9 @@ public class MyPageController {
     }
 
     private void goToSearch() {
+        Users userInfo = new Users();
         // 현재 뷰를 다시 보이도록 설정
-        SearchView searchView = new SearchView();
+        SearchView searchView = new SearchView(userInfo);
         SearchController searchController = new SearchController(searchView, SearchDao.getInstance());
         myPageView.dispose();
         searchView.setVisible(true);
