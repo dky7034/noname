@@ -70,7 +70,7 @@ public class PostDao {
                 Posts post = new Posts();
                 post.setPostId(rs.getString("POST_ID"));
                 post.setUserId(rs.getString("USER_ID"));
-                post.setPostContent(rs.getString("USER_NAME"));
+                post.setUserName(rs.getString("USER_NAME"));
                 post.setPostContent(rs.getString("POST_CONTENT"));
                 post.setCreateDate(rs.getDate("CREATE_DATE"));
                 post.setCommentsCount(rs.getInt("COMMENT_COUNT")); // 댓글 수 설정

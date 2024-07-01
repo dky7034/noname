@@ -43,6 +43,8 @@ public class PostView extends JFrame {
 
         // 내용 입력 필드 설정 및 추가
         contentArea = new JTextArea(10, 30);
+        contentArea.setWrapStyleWord(true); // 단어 단위로 줄바꿈 활성화
+        contentArea.setLineWrap(true); // 텍스트 영역이 행 넘침 시 자동 줄 바꿈 설정
         styleTextArea(contentArea);
         JScrollPane contentScrollPane = new JScrollPane(contentArea);
         contentScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -55,7 +57,7 @@ public class PostView extends JFrame {
         rightPanel.add(hashtagLabel);
 
         // 해시태그 입력 필드 설정 및 추가
-        hashtagArea = new JTextArea(3, 30);
+        hashtagArea = new JTextArea(3, 25);
         styleTextArea(hashtagArea);
         JScrollPane hashtagScrollPane = new JScrollPane(hashtagArea);
         hashtagScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
