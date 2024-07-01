@@ -6,6 +6,8 @@ import com.kostagram.model.UserDao;
 import com.kostagram.view.LoginView;
 import com.kostagram.view.MainView;
 import com.kostagram.view.RegisterView;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
@@ -19,6 +21,7 @@ public class RegisterController {
         this.registerView = registerView;
         this.userDao = userDao.getInstance();
         this.registerView.addRegisterListener(new RegisterListener());
+        this.registerView.addBackListener(new BackListener());
     }
 
     class RegisterListener implements ActionListener {
@@ -73,5 +76,13 @@ public class RegisterController {
 
         }
     }
-
+    class BackListener implements ActionListener{
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("뒤로가기");
+            LoginView loginView = new LoginView();
+            LoginController loginController = new LoginController(loginView, userDao);
+            registerView.dispose();
+            loginView.setVisible(true);
+        }
+    }
 }

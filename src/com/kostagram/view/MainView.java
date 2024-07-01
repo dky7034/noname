@@ -24,7 +24,7 @@ public class MainView extends JFrame {
 
     private BottomPanel bottomPanel; // BottomPanel 클래스 사용
     private PostDao postDao; // 데이터베이스 접근 객체(Posts)
-    public static Users user; // 현재 로그인한 사용자
+    private Users user; // 현재 로그인한 사용자
 
     public MainView() {
         setTitle("Main"); // 프레임 제목 설정
@@ -39,7 +39,7 @@ public class MainView extends JFrame {
         JPanel topPanel = new JPanel(); // 상단 패널 생성
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS)); // 상단 패널 레이아웃 설정
         topPanel.setBackground(bgColor); // 상단 패널 배경 색 설정
-        topPanel.setPreferredSize(new Dimension(450, 45)); // 상단 패널 크기 설정
+        topPanel.setPreferredSize(new Dimension(475, 45)); // 상단 패널 크기 설정
         JLabel titleLabel = new JLabel(" Kostagram"); // 제목 라벨 생성
         titleLabel.setFont(kostagramFont); // 제목 라벨 글꼴 설정
         titleLabel.setForeground(Color.white); // 제목 라벨 글자 색 설정

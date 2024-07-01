@@ -2,6 +2,7 @@ package com.kostagram.controller;
 
 import com.kostagram.model.*;
 import com.kostagram.view.MainView;
+import com.kostagram.view.MyPageView;
 import com.kostagram.view.PostView;
 import com.kostagram.view.SearchView;
 
@@ -19,6 +20,7 @@ public class MainController {
 
     // DAO 생성
     PostDao postDao = PostDao.getInstance();
+    MyPageDao myPageDao = MyPageDao.getInstance();
 
     public MainController(MainView mainView, Users userInfo) {
         this.mainView = mainView;
@@ -46,7 +48,7 @@ public class MainController {
 
     class SearchBtnListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            SearchView searchView = new SearchView();
+            SearchView searchView = new SearchView(userInfo);
             SearchController searchController = new SearchController(searchView, SearchDao.getInstance());
             searchView.setVisible(true);
         }
@@ -60,11 +62,12 @@ public class MainController {
         }
     };
 
+    // 마이페이지 이동 버튼
     class UserBtnListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // UserView userView = new UserView();  // UserView가 구현되어 있다면 주석을 풀고 사용
-            // UserController userController = new UserController(userView, userInfo, postDao);
-            // userView.setVisible(true);
+            MyPageView myPageView = new MyPageView(userInfo);
+            MyPageController myPageController = new MyPageController(myPageView,myPageDao);
+            myPageView.setVisible(true);
         }
     }
 }

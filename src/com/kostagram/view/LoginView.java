@@ -24,7 +24,7 @@ public class LoginView extends JFrame {
         setLocationRelativeTo(null);
         setSize(470, 920);
         setLocationRelativeTo(null);
-
+        setResizable(false);
         // 로그인 화면 구성
         JPanel loginPanel = new JPanel(new GridBagLayout());
         loginPanel.setBackground(new Color(0, 0, 0));
