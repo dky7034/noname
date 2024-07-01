@@ -7,7 +7,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="ojdbc8" level="project" />
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
@@ -22,11 +21,12 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/app/user/product/21c/dbhomeXE/jdbc/lib/ojdbc8.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../app/user/product/21c/dbhomeXE/jdbc/lib/ojdbc8.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="ojdbc8" level="project" />
   </component>
 </module>

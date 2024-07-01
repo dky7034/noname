@@ -20,28 +20,25 @@ public class MyPageDao {
     }
 
     // 게시물 검색 메서드(UserEmail로 검색)
-    public List<Posts> searchPostsByUserEmail(String UserEmail) {
+    public List<Posts> searchPostsByUserId(String userId) {
         List<Posts> postsList = new ArrayList<>();
-        String sql = "SELECT * " +
-                "FROM POSTS p, USERS u " +
-                "WHERE p.USER_ID = u.USER_ID AND u.USER_EMAIL = ?";
+        String sql = "SELECT POST_ID, POST_CONTENT, CREATE_DATE, (SELECT SUBSTR(USERS.USER_EMAIL, 0, INSTR(USER_EMAIL, '@')-1) FROM USERS WHERE USER_ID =P.USER_ID) AS USER_NAME, LIKES_COUNT FROM POSTS P WHERE USER_ID = ?";
 
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1,UserEmail);
+            pstmt.setString(1,userId);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 String postId = rs.getString("post_id");
                 String content = rs.getString("post_content");
                 Date createDate = rs.getDate("create_date");
-                String userId = rs.getString("user_id");
+                String userName = rs.getString("USER_NAME");
                 int likesCount = rs.getInt("likes_count");
-                String hashTag = rs.getString("hash_tag");
-                String userName = rs.getString("user_name");
+                String hashTags ="";
 
 
-                Posts post = new Posts(postId, content, createDate, userId, likesCount, hashTag, userName);
+                Posts post = new Posts(postId, content, createDate, userId, likesCount, hashTags, userName);
                 postsList.add(post);
             }
         } catch (SQLException e) {

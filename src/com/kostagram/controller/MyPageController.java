@@ -11,12 +11,13 @@ import com.kostagram.view.SearchView;
 public class MyPageController {
     private MyPageView myPageView;
     private MyPageDao myPageDao;
+    private Users users;
 
 
     public MyPageController(MyPageView myPageView, MyPageDao myPageDao) {
         this.myPageView = myPageView;
         this.myPageDao = myPageDao;
-
+        this.users = myPageView.userInfo;
         this.myPageView.addHomeButtonListener(e -> goToHome());
         this.myPageView.addSearchBtnListener(e -> goToSearch());
         this.myPageView.addAddButtonListener(e -> goToAddPost());
@@ -36,9 +37,8 @@ public class MyPageController {
     }
 
     private void goToSearch() {
-        Users userInfo = new Users();
         // 현재 뷰를 다시 보이도록 설정
-        SearchView searchView = new SearchView(userInfo);
+        SearchView searchView = new SearchView(users);
         SearchController searchController = new SearchController(searchView, SearchDao.getInstance());
         myPageView.dispose();
         searchView.setVisible(true);
