@@ -39,7 +39,7 @@ public class MainView extends JFrame {
         JPanel topPanel = new JPanel(); // 상단 패널 생성
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS)); // 상단 패널 레이아웃 설정
         topPanel.setBackground(bgColor); // 상단 패널 배경 색 설정
-        topPanel.setPreferredSize(new Dimension(450, 45)); // 상단 패널 크기 설정
+        topPanel.setPreferredSize(new Dimension(475, 45)); // 상단 패널 크기 설정
         JLabel titleLabel = new JLabel(" Kostagram"); // 제목 라벨 생성
         titleLabel.setFont(kostagramFont); // 제목 라벨 글꼴 설정
         titleLabel.setForeground(Color.white); // 제목 라벨 글자 색 설정

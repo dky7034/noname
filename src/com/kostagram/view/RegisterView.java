@@ -1,6 +1,7 @@
 package com.kostagram.view;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -12,15 +13,26 @@ public class RegisterView extends JFrame {
     private RoundJPasswordField passwordField = new RoundJPasswordField(25,new Color(54,54,54), Color.white,"Password");
     private FadeButton registerButton = new FadeButton(new Color(0,150,247), new Color(0,92,192),
             Color.white, "Register");
+    private JButton backButton = new JButton(new ImageIcon("image/back-icon.png"));
 
     public RegisterView() {
         setTitle("Register");
         setSize(450, 920);
         setLocationRelativeTo(null);
-
+        setResizable(false);
         // 회원가입 화면 구성
         JPanel signUpPanel = new JPanel(new GridBagLayout());
         signUpPanel.setBackground(new Color(0, 0, 0));
+        JPanel backPanel = new JPanel();
+        backPanel.setBackground(new Color(0,0,0));
+        backPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        backButton.setSize(20,20);
+        backButton.setContentAreaFilled(false);
+        backButton.setBorderPainted(false);
+        backButton.setFocusPainted(false);
+        backButton.setOpaque(false);
+        backPanel.add(backButton);
+
         JLabel logoLabel = new JLabel("Kostagram");
         Font font = new Font("Bauhaus 93",Font.BOLD,50);
         logoLabel.setFont(font);
@@ -84,9 +96,8 @@ public class RegisterView extends JFrame {
         gbc.gridx = 0; gbc.gridy = 4; signUpPanel.add(passwordField, gbc);
         gbc.gridx = 0; gbc.gridy = 5; signUpPanel.add(registerButton, gbc);
 
-
-        add(signUpPanel);
-
+        add(backPanel, BorderLayout.NORTH);
+        add(signUpPanel, BorderLayout.CENTER);
 
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -114,6 +125,10 @@ public class RegisterView extends JFrame {
 
     public void addRegisterListener(ActionListener listener) {
         registerButton.addActionListener(listener);
+    }
+
+    public void addBackListener(ActionListener listener){
+        backButton.addActionListener(listener);
     }
 
     public void displayErrorMessage(String message) {
