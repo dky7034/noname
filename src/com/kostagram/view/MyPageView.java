@@ -55,6 +55,8 @@ public class MyPageView extends JFrame{
 
         //userInfo 패널
         userInfoPanel = new JPanel();
+        JLabel icon = new JLabel(new ImageIcon("./src/com/kostagram/icon/user_44x44.png"));
+
         userInfoPanel.setBackground(new Color(0,0,0));
         userInfoPanel.setLayout(new GridLayout(2,2));
         userInfoPanel.setPreferredSize(new Dimension(450,100));
@@ -79,8 +81,10 @@ public class MyPageView extends JFrame{
         intTL.setForeground(Color.WHITE);
         intTL.setFont(new Font("맑은 고딕", Font.BOLD, 16));
 
+        userInfoPanel.add(icon);
         userInfoPanel.add(totalPosts);
         userInfoPanel.add(totalLikes);
+        userInfoPanel.add(new JLabel());
         userInfoPanel.add(intTP);
         userInfoPanel.add(intTL);
 
@@ -183,6 +187,7 @@ public class MyPageView extends JFrame{
 
         postPanel.add(postIdLabel, BorderLayout.NORTH);
         postPanel.add(scrollPane, BorderLayout.CENTER);
+        postPanel.setBorder(null);
 
         // 패널 클릭 시 상세 페이지로 이동하는 리스너 추가(중복됨)
 //        postPanel.addMouseListener(new java.awt.event.MouseAdapter() {
