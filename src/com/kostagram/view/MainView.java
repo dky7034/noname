@@ -16,7 +16,7 @@ public class MainView extends JFrame {
     private JScrollPane scrollPane; // 리스트를 스크롤할 수 있도록 하는 JScrollPane
     private boolean loading = false; // 데이터 로딩 중 여부를 나타내는 플래그
     private boolean allDataLoaded = false; // 추가 데이터가 더 이상 없는지 확인하기 위한 변수
-    protected static final Font kostagramFont = new Font("맑은 고딕", Font.BOLD, 20);
+    protected static final Font kostagramFont = new Font("Bauhaus 93", Font.BOLD, 30);
     protected static final Font font = new Font("맑은 고딕", Font.BOLD, 16); // 글꼴 설정
     protected static final Font contentFont = new Font("맑은 고딕", Font.BOLD, 14); // 내용 글꼴 설정
     protected static final Color bgColor = Color.BLACK; // 배경 색 설정
