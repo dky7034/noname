@@ -42,6 +42,7 @@ public class MainController {
     class HomeBtnListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // 현재 뷰를 다시 보이도록 설정
+            loadPosts();
             mainView.setVisible(true);
         }
     }
