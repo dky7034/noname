@@ -8,6 +8,17 @@ public class Users {
     private String password;
     private Date createDate;
 
+    public Users(String userId, String email, String password, Date createDate) {
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+        this.createDate = createDate;
+    }
+    public Users() {};
+
+    public Users(String userId, String email) {
+    }
+
     public String getUserId() {
         return userId;
     }
