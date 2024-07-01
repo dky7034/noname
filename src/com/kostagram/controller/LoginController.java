@@ -50,19 +50,7 @@ public class LoginController {
             }
 
 
-//        public void actionPerformed(ActionEvent e) {
-//            String email = loginView.getEmail();
-//            String password = loginView.getPassword();
-//
-//            Users users = userDao.getUserByEmail(email);
-//            if (users != null && users.getPassword().equals(password)) {
-//                MainView mainView = new MainView();
-//                MainController mainController = new MainController(mainView, users);
-//                loginView.dispose();
-//                mainView.setVisible(true);
-//            } else {
-//                loginView.displayErrorMessage("이메일이나 비밀번호가 일치하지 않습니다.");
-//            }
+
         }
     }
 
