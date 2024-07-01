@@ -6,8 +6,12 @@ import com.kostagram.view.MyPageView;
 import com.kostagram.view.PostView;
 import com.kostagram.view.SearchView;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class MainController {
@@ -44,7 +48,7 @@ public class MainController {
 
     class SearchBtnListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            SearchView searchView = new SearchView();
+            SearchView searchView = new SearchView(userInfo);
             SearchController searchController = new SearchController(searchView, SearchDao.getInstance());
             searchView.setVisible(true);
         }
@@ -56,8 +60,9 @@ public class MainController {
             PostController postController = new PostController(postView, userInfo, postDao);
             postView.setVisible(true);
         }
-    }
+    };
 
+    // 마이페이지 이동 버튼
     class UserBtnListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             MyPageView myPageView = new MyPageView(userInfo);

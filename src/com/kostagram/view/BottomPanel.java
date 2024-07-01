@@ -57,4 +57,6 @@ public class BottomPanel extends JPanel {
     public void addUserButtonListener(ActionListener listener) {
         userButton.addActionListener(listener);
     }
+
+
 }
