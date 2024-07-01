@@ -14,7 +14,7 @@ public class BottomPanel extends JPanel {
         setLayout(new GridBagLayout());
         setBackground(Color.BLACK);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 40, 10, 40);
+        gbc.insets = new Insets(10, 35, 10, 35);
 
         homeButton = createIconButton("home");
         searchButton = createIconButton("search");
