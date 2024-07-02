@@ -22,7 +22,7 @@ public class SearchDao {
     // 게시물 검색 메서드
     public List<Posts> searchPosts(String query) {
         List<Posts> postsList = new ArrayList<>();
-        String sql = "SELECT * FROM posts WHERE post_content LIKE ?";
+        String sql = "SELECT POST_ID, POST_CONTENT, CREATE_DATE, USER_ID, (SELECT SUBSTR(USERS.USER_EMAIL, 0, INSTR(USER_EMAIL, '@')-1) FROM USERS WHERE USER_ID =P.USER_ID) AS USER_NAME, LIKES_COUNT FROM POSTS P WHERE P.post_content LIKE ?";
 
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -30,13 +30,14 @@ public class SearchDao {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                String postId = rs.getString("post_id");
-                String content = rs.getString("post_content");
-                Date createDate = rs.getDate("create_date");
-                String userId = rs.getString("user_id");
-                int likesCount = rs.getInt("likes_count");
+                String postId = rs.getString("POST_ID");
+                String content = rs.getString("POST_CONTENT");
+                Date createDate = rs.getDate("CREATE_DATE");
+                String userId = rs.getString("USER_ID");
+                String userName = rs.getString("USER_NAME");
+                int likesCount = rs.getInt("LIKES_COUNT");
 
-                Posts post = new Posts(postId, content, createDate, userId, likesCount);
+                Posts post = new Posts(postId, content, createDate, userId, likesCount, userName);
                 postsList.add(post);
             }
         } catch (SQLException e) {

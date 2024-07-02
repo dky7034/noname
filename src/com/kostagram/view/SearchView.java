@@ -43,11 +43,13 @@ public class SearchView extends JFrame {
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout()); // BorderLayout 사용
         mainPanel.setBackground(Color.black); // 메인 패널 배경 색상 설정
+        mainPanel.setBorder(null);
 
         // 검색 패널 설정
         searchPanel = new JPanel();
         searchPanel.setLayout(new GridBagLayout()); // GridBagLayout 사용
         searchPanel.setBackground(Color.black); // 검색 패널 배경 색상 설정
+        searchPanel.setBorder(null);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5); // 여백 설정
@@ -105,14 +107,16 @@ public class SearchView extends JFrame {
         resultsPanel = new JPanel();
         resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS)); // 수직 박스 레이아웃 사용
         resultsPanel.setBackground(Color.black); // 결과 패널 배경 색상 설정
-
+        resultsPanel.setBorder(null);
         // JScrollPane을 사용하여 결과 패널을 스크롤 가능하게 설정
         scrollPane = new JScrollPane(resultsPanel);
+        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+        verticalScrollBar.setUI(new PrettyScrollBar());
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); // 수직 스크롤바 필요 시 표시 설정
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // 수평 스크롤바는 절대 표시하지 않음
         scrollPane.getViewport().setBackground(Color.black); // 스크롤뷰포트 배경 색상 설정
         scrollPane.setBackground(Color.black); // 스크롤패널 배경 색상 설정
-
+        scrollPane.setBorder(null);
         // 메인 패널에 구성 요소 추가
         mainPanel.add(searchPanel, BorderLayout.NORTH); // 검색 패널을 메인 패널의 북쪽에 추가
         mainPanel.add(scrollPane, BorderLayout.CENTER); // 스크롤 패널을 메인 패널의 중앙에 추가
@@ -175,23 +179,32 @@ public class SearchView extends JFrame {
     private JPanel createPostPanel(Posts post) {
         JPanel postPanel = new JPanel();
         postPanel.setLayout(new BorderLayout());
-        postPanel.setBackground(Color.LIGHT_GRAY); // 패널 배경색 설정
+        postPanel.setBackground(Color.BLACK); // 패널 배경색 설정
         postPanel.setPreferredSize(new Dimension(400, 120)); // 패널 크기 고정
         postPanel.setMaximumSize(new Dimension(450, 150));
         postPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // 내부 여백 설정
 
-        JLabel postIdLabel = new JLabel("게시물 ID: " + post.getPostId());
+        JLabel postIdLabel = new JLabel("" + post.getUserName());
         postIdLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
         postIdLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        postIdLabel.setForeground(Color.WHITE);
 
         JTextArea postContentArea = new JTextArea(post.getPostContent());
         postContentArea.setEditable(false); // 편집 불가능하도록 설정
         postContentArea.setLineWrap(true); // 텍스트 영역이 행 넘침 시 자동 줄 바꿈 설정
         postContentArea.setWrapStyleWord(true); // 단어 단위로 줄 바꿈 설정
         postContentArea.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
+        postContentArea.setForeground(Color.WHITE);
+        postContentArea.setBackground(Color.BLACK); // 패널 배경색 설정
 
         postPanel.add(postIdLabel, BorderLayout.NORTH);
-        postPanel.add(new JScrollPane(postContentArea), BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(postContentArea);
+        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+        verticalScrollBar.setUI(new PrettyScrollBar());
+        scrollPane.setForeground(Color.WHITE);
+        scrollPane.setBackground(Color.BLACK); // 패널 배경색 설정
+        scrollPane.setBorder(null);
+        postPanel.add(scrollPane, BorderLayout.CENTER);
 
         return postPanel;
     }
