@@ -21,7 +21,8 @@ public class CommentView extends JFrame {
     public CommentView(CommentController commentController) {
         setTitle("댓글 작성");
         setSize(450, 920);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null); // 프레임을 화면 중앙에 위치시킴
         user = LoginController.users;
 
         // 메인 패널 설정
