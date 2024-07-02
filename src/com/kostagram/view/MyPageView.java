@@ -169,8 +169,10 @@ public class MyPageView extends JFrame{
         postIdLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
         JTextArea postContentArea = new JTextArea();
-
-        postContentArea.append(post.getPostContent().substring(0,78));
+        int maxLength = 78;
+        int endIndex = Math.min(post.getPostContent().length(), maxLength);
+        String displayContent = post.getPostContent().substring(0, endIndex);
+        postContentArea.append(displayContent);
         postContentArea.setEditable(false); // 편집 불가능하도록 설정
         postContentArea.setLineWrap(true); // 텍스트 영역이 행 넘침 시 자동 줄 바꿈 설정
         postContentArea.setWrapStyleWord(true); // 단어 단위로 줄 바꿈 설정

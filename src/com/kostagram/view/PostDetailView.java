@@ -2,7 +2,7 @@ package com.kostagram.view;
 
 import com.kostagram.model.Posts;
 import com.kostagram.model.Users;
-import oracle.jdbc.proxy.annotation.Pre;
+
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
