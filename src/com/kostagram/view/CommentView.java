@@ -54,12 +54,14 @@ public class CommentView extends JFrame {
         bottomPanel.setBackground(bgColor);
 
         JLabel userImageLabel = new JLabel();
+        userImageLabel.setBorder(new EmptyBorder(0,5,0,10));
         ImageIcon userIcon = createImageIcon("user.png");
         if (userIcon != null) {
             userImageLabel.setIcon(userIcon);
         } else {
             userImageLabel.setText("No Image");
         }
+
 
         textField.setBackground(bgColor);
         textField.setForeground(Color.DARK_GRAY);
