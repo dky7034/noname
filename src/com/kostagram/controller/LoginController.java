@@ -33,7 +33,7 @@ public class LoginController {
             String password = new String(loginView.getPassword());
 
             users = userDao.getUserByEmail(email);
-            System.out.println(users);
+            System.out.println("users in LoginController: " + users);
 
             if(Pattern.matches(pattern, email)) {
                 if (users != null && users.getPassword().equals(password)) {

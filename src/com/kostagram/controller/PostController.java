@@ -15,17 +15,23 @@ public class PostController {
     // 생성자
     public PostController() {}
 
-    public PostController(PostView postView, Users userInfo, PostDao postDao) {
+    public PostController(PostView postView, Users userInfo) {
         this.postView = postView;
         this.userInfo = userInfo;
-        this.postDao = postDao;
+        this.postDao = PostDao.getInstance();
     }
 
-    public boolean addPost(String content, String hashTag) {
+    public boolean addPost(String content, String hashTag, Users userInfo) {
         Posts post = new Posts();
-        post.setUserId(userInfo.getUserId());
         post.setPostContent(content);
         post.setHashTags(hashTag);
+        post.setUserId(userInfo.getUserId());
+
+        // 디버깅을 위한 로그 추가
+        System.out.println("Post Content: " + content);
+        System.out.println("Hash Tags: " + hashTag);
+        System.out.println("User ID in Controller: " + userInfo.getUserId());
+
         try {
             postDao.addPost(post);
             return true;
