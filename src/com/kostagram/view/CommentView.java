@@ -7,6 +7,7 @@ import com.kostagram.model.Users;
 import com.kostagram.model.Comments;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class CommentView extends JFrame {
     private JPanel mainPanel = new JPanel();
-    private JScrollPane scrollPane = new JScrollPane(mainPanel);
+    private JScrollPane scrollPane;
     private JButton commentAddBtn = new JButton();
     private JTextField textField = new JTextField();
     private Users user;
@@ -22,10 +23,14 @@ public class CommentView extends JFrame {
     private CommentDao commentDao;
 
     protected static final Font font = new Font("맑은 고딕", Font.BOLD, 12);
-    protected static final Color bgColor = new Color(38, 41, 46);
+    protected static final Color bgColor = Color.BLACK;
 
     public CommentView(String postId) {
         user = LoginController.users;  // user 초기화
+        scrollPane = new JScrollPane(mainPanel);
+        scrollPane.setBorder(null);
+        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar(); // 수직 스크롤 바 가져오기
+        verticalScrollBar.setUI(new PrettyScrollBar()); // 스크롤 바 UI 커스터마이징
 
         setTitle("Comment");
         setSize(450, 920);
@@ -57,8 +62,9 @@ public class CommentView extends JFrame {
         }
 
         textField.setBackground(bgColor);
-        textField.setForeground(Color.white);
-        textField.setPreferredSize(new Dimension(230, 20));
+        textField.setForeground(Color.DARK_GRAY);
+        textField.setPreferredSize(new Dimension(200, 20));
+        textField.setMargin(new Insets(10, 10, 10, 10));
 
         ImageIcon commentAddIcon = createImageIcon("add_comment.png");
         if (commentAddIcon != null) {
@@ -125,12 +131,12 @@ public class CommentView extends JFrame {
         commentPanel.setLayout(new BorderLayout());
         commentPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         commentPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        commentPanel.setBackground(new Color(23, 23, 23));
+        commentPanel.setBackground(bgColor);
 
         JPanel userInfoPanel = new JPanel();
         FlowLayout flowLayout = new FlowLayout(FlowLayout.LEFT, 10, 16);
         userInfoPanel.setLayout(flowLayout);
-        userInfoPanel.setBackground(new Color(23, 23, 23));
+        userInfoPanel.setBackground(bgColor);
 
         JLabel userImage = new JLabel();
         ImageIcon icon = createImageIcon("user_image.png");
@@ -155,7 +161,7 @@ public class CommentView extends JFrame {
         commentTextArea.setLineWrap(true);
         commentTextArea.setWrapStyleWord(true);
         commentTextArea.setEditable(false);
-        commentTextArea.setBackground(new Color(23, 23, 23));
+        commentTextArea.setBackground(bgColor);
         commentTextArea.setForeground(Color.WHITE);
         commentTextArea.setText(comment.getCommentContent());
 
