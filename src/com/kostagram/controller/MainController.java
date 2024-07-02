@@ -10,10 +10,13 @@ import java.util.List;
 public class MainController {
     private MainView mainView;
     private Users userInfo;
+    private Posts post;
     private BottomPanel bottomPanel;
+
     // DAO 생성
     PostDao postDao = PostDao.getInstance();
     MyPageDao myPageDao = MyPageDao.getInstance();
+    CommentDao commentDao = CommentDao.getInstance();
 
     public MainController(MainView mainView, Users userInfo) {
         this.mainView = mainView;
