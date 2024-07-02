@@ -41,6 +41,6 @@ public class MyPageController {
     }
 
     private void goToUserPage() {
-        // User Page로 이동하는 로직을 추가하세요
+        myPageView.setVisible(true);
     }
 }

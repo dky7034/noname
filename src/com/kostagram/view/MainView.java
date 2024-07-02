@@ -128,7 +128,7 @@ public class MainView extends JFrame {
         commentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CommentView commentView = new CommentView(new CommentController()); // 댓글 보기 창 열기
+                CommentView commentView = new CommentView(post.getPostId()); // 댓글 보기 창 열기
                 commentView.setVisible(true);
             }
         });

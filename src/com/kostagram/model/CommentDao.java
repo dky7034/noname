@@ -7,58 +7,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommentDao {
-    ConnectionProvider connectionProvider = new ConnectionProvider();
-
-    private static CommentDao instance = new CommentDao();
+    private static CommentDao instance;
+    private Connection conn;
 
     private CommentDao() {
-        try {
-            ConnectionProvider.getConnection();
-        } catch (Exception e) {
-            System.out.println("예외 발생: " + e.getMessage());
-        }
+        conn = ConnectionProvider.getConnection();
     }
 
     public static CommentDao getInstance() {
+        if (instance == null) {
+            instance = new CommentDao();
+        }
         return instance;
     }
 
-    public void addComment(Comments comments) {
-        String sql = "INSERT INTO comments(post_id, user_id, comment_content, create_date) VALUES(?,?,?,?)";
-
-        try (Connection conn = ConnectionProvider.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, comments.getPostId());
-            pstmt.setString(2, comments.getUserId());
-            pstmt.setString(3, comments.getCommentContent());
-            pstmt.setTimestamp(4, new Timestamp(comments.getCreateDate().getTime()));
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            System.out.println("댓글 추가 메서드에서 예외 발생: " + e.getMessage());
-        }
-    }
-
-    public List<Comments> getCommentsByPostId(int postId) {
-        String sql = "SELECT comment_id, post_id, user_id, comment_content, create_date FROM comments WHERE post_id = ?";
+    public List<Comments> getCommentsByPostId(String postId) {
         List<Comments> comments = new ArrayList<>();
+        String sql = "SELECT c.comment_content, c.create_date, substr(u.user_email,1,instr(u.USER_EMAIL,'@')-1) AS USER_EMAIL\n" +
+                "FROM comments c, users u Where c.user_id = u.user_id AND c.post_id = ?";
 
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, postId);
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                Comments comment = new Comments();
-                comment.setCommentId(rs.getString("comment_id"));
-                comment.setPostId(rs.getString("post_id"));
-                comment.setUserId(rs.getString("user_id"));
-                comment.setCommentContent(rs.getString("comment_content"));
-                comment.setCreateDate(rs.getTimestamp("create_date"));
-                comments.add(comment);
+            pstmt.setString(1, postId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Comments comment = new Comments();
+                    comment.setUserEmail(rs.getString("user_email"));
+                    comment.setCommentContent(rs.getString("comment_content"));
+                    comment.setCreateDate(rs.getTimestamp("create_date"));
+                    comments.add(comment);
+                }
             }
         } catch (SQLException e) {
-            System.out.println("특정 게시글 댓글을 불러오는 메서드에서 예외 발생: " + e.getMessage());
+            e.printStackTrace();
         }
         return comments;
+    }
+
+    public void addComment(Comments comment) {
+        try {
+            String query = "INSERT INTO comments (comment_content, user_id, post_id) VALUES (?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, comment.getCommentContent());
+            pstmt.setString(2, comment.getUserId());
+            pstmt.setString(3, comment.getPostId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -80,10 +80,6 @@ public class PostView extends JFrame {
         gbc.gridwidth = 2;
         mainPanel.add(hashtagScrollPane, gbc);
 
-        rightPanel.add(hashtagScrollPane);
-        rightPanel.setBorder(null);
-
-
         // 게시 버튼 설정 및 추가
         JButton postButton = new JButton("게시");
         styleButton(postButton);
