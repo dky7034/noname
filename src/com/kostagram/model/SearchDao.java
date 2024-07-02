@@ -22,7 +22,7 @@ public class SearchDao {
     // 게시물 검색 메서드
     public List<Posts> searchPosts(String query) {
         List<Posts> postsList = new ArrayList<>();
-        String sql = "SELECT POST_ID, POST_CONTENT, CREATE_DATE, USER_ID, (SELECT SUBSTR(USERS.USER_EMAIL, 0, INSTR(USER_EMAIL, '@')-1) FROM USERS WHERE USER_ID =P.USER_ID) AS USER_NAME, LIKES_COUNT FROM POSTS P WHERE P.post_content LIKE ?";
+        String sql = "SELECT POST_ID, POST_CONTENT, CREATE_DATE, USER_ID, (SELECT SUBSTR(USERS.USER_EMAIL, 0, INSTR(USER_EMAIL, '@')-1) FROM USERS WHERE USER_ID =P.USER_ID) AS USER_NAME, LIKES_COUNT FROM POSTS P WHERE P.post_content LIKE ? ORDER BY CREATE_DATE DESC";
 
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

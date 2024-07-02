@@ -61,9 +61,12 @@ public class PostDao {
      * @return 게시글 목록
      */
     public List<Posts> getPosts() {
-        String sql = "SELECT P.POST_ID, P.USER_ID, (SELECT SUBSTR(U.USER_EMAIL, 0, INSTR(U.USER_EMAIL, '@')-1) FROM USERS U WHERE U.USER_ID = P.USER_ID) AS USER_NAME, P.POST_CONTENT, P.CREATE_DATE, "
-                + "(SELECT COUNT(*) FROM COMMENTS C WHERE C.POST_ID = P.POST_ID) AS COMMENT_COUNT "
-                + "FROM POSTS P";
+        String sql = "SELECT P.POST_ID, P.USER_ID, " +
+                "(SELECT SUBSTR(U.USER_EMAIL, 0, INSTR(U.USER_EMAIL, '@') - 1) FROM USERS U WHERE U.USER_ID = P.USER_ID) AS USER_NAME, " +
+                "P.POST_CONTENT, P.CREATE_DATE, " +
+                "(SELECT COUNT(*) FROM COMMENTS C WHERE C.POST_ID = P.POST_ID) AS COMMENT_COUNT " +
+                "FROM POSTS P " +
+                "ORDER BY P.CREATE_DATE DESC"; ;
         List<Posts> posts = new ArrayList<>();
 
         try (Connection conn = ConnectionProvider.getConnection();

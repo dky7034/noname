@@ -22,7 +22,7 @@ public class MyPageDao {
     // 게시물 검색 메서드(UserEmail로 검색)
     public List<Posts> searchPostsByUserId(String userId) {
         List<Posts> postsList = new ArrayList<>();
-        String sql = "SELECT POST_ID, POST_CONTENT, CREATE_DATE, (SELECT SUBSTR(USERS.USER_EMAIL, 0, INSTR(USER_EMAIL, '@')-1) FROM USERS WHERE USER_ID =P.USER_ID) AS USER_NAME, LIKES_COUNT FROM POSTS P WHERE USER_ID = ?";
+        String sql = "SELECT POST_ID, POST_CONTENT, CREATE_DATE, (SELECT SUBSTR(USERS.USER_EMAIL, 0, INSTR(USER_EMAIL, '@')-1) FROM USERS WHERE USER_ID =P.USER_ID) AS USER_NAME, LIKES_COUNT FROM POSTS P WHERE USER_ID = ? ORDER BY CREATE_DATE DESC";
 
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -68,19 +68,19 @@ public class MyPageDao {
         return cnt;
     }
 
-    //UserEmail으로 총 likes 갯수 구하기
-    public int getTotalLikesByEmail(String email){
+    //UserEmail으로 총 comment 갯수 구하기
+    public int getTotalCommentsById(String userId){
         int cnt = 0;
-        String sql = "SELECT SUM(p.LIKES_COUNT) AS LIKES_CNT " +
-                "FROM POSTS p, USERS u " +
-                "WHERE p.USER_ID = u.USER_ID AND u.USER_EMAIL = ?";
+        String sql = "SELECT COUNT(*) AS CNT " +
+                "FROM POSTS P, COMMENTS C " +
+                "WHERE P.POST_ID = C.POST_ID AND P.USER_ID = ?";
         try (Connection conn = ConnectionProvider.getConnection();// 데이터베이스 연결 얻기
              PreparedStatement pstmt = conn.prepareStatement(sql)) { // SQL 문 준비
-            pstmt.setString(1, email); // SQL 문에 이메일 값 설정
+            pstmt.setString(1, userId); // SQL 문에 이메일 값 설정
             ResultSet rs = pstmt.executeQuery(); // 쿼리 실행 및 결과 집합 얻기
 
             if (rs.next()) { // 결과 집합이 비어 있지 않은지 확인
-                cnt = rs.getInt("LIKES_CNT");
+                cnt = rs.getInt("CNT");
             }
 //
         } catch (SQLException e) {

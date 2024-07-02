@@ -24,7 +24,7 @@ public class CommentDao {
     public List<Comments> getCommentsByPostId(String postId) {
         List<Comments> comments = new ArrayList<>();
         String sql = "SELECT c.comment_content, c.create_date, substr(u.user_email,1,instr(u.USER_EMAIL,'@')-1) AS USER_EMAIL\n" +
-                "FROM comments c, users u Where c.user_id = u.user_id AND c.post_id = ?";
+                "FROM comments c, users u Where c.user_id = u.user_id AND c.post_id = ? ORDER BY c.create_date DESC";
 
         try (Connection conn = ConnectionProvider.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

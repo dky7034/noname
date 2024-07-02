@@ -85,7 +85,7 @@ public class PostView extends JFrame {
                 String hashtags = hashtagArea.getText(); // 해시태그 가져오기
                 boolean isSuccess = postController.addPost(content, hashtags, userInfo); // 게시물 추가 시도
                 if (isSuccess) {
-                    JOptionPane.showMessageDialog(null, "게시글 작성 성공!\n내용: " + content + "\n해시태그: " + hashtags);
+                    JOptionPane.showMessageDialog(null, "게시글 작성 성공!");
                     dispose(); // 창 닫기
                 } else {
                     JOptionPane.showMessageDialog(null, "게시글 작성 실패! 다시 시도해주세요.", "Error", JOptionPane.ERROR_MESSAGE);

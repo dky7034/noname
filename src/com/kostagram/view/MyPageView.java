@@ -70,16 +70,16 @@ public class MyPageView extends JFrame{
         intTP.setLayout(new FlowLayout(FlowLayout.CENTER));
         intTP.setBorder(BorderFactory.createEmptyBorder(10, 10, 10 , 10));
         intTP.setForeground(Color.WHITE);
-        intTP.setFont(new Font("맑은 고딕", Font.BOLD, 16));
+        intTP.setFont(new Font("맑은 고딕", Font.BOLD, 20));
         //User에 따른 total Likes 개수
-        JLabel totalLikes = new JLabel("Likes");
-        JLabel intTL = new JLabel(String.valueOf(myPageDao.getTotalLikesByEmail(email)));
+        JLabel totalLikes = new JLabel("Comments");
+        JLabel intTL = new JLabel(String.valueOf(myPageDao.getTotalCommentsById(userInfo.getUserId())));
         totalLikes.setBorder(BorderFactory.createEmptyBorder(10, 10, 10 , 10));
         totalLikes.setForeground(Color.WHITE);
         totalLikes.setFont(new Font("맑은 고딕", Font.BOLD, 16));
         intTL.setBorder(BorderFactory.createEmptyBorder(10, 10, 10 , 10));
         intTL.setForeground(Color.WHITE);
-        intTL.setFont(new Font("맑은 고딕", Font.BOLD, 16));
+        intTL.setFont(new Font("맑은 고딕", Font.BOLD, 20));
 
         userInfoPanel.add(icon);
         userInfoPanel.add(totalPosts);
