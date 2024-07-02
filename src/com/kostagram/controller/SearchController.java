@@ -1,6 +1,5 @@
 package com.kostagram.controller;
 
-import com.kostagram.model.PostDao;
 import com.kostagram.model.SearchDao;
 import com.kostagram.model.Users;
 import com.kostagram.view.PostView;
@@ -10,11 +9,13 @@ import com.kostagram.view.SearchView;
 public class SearchController {
     private SearchView searchView; // 검색 뷰 인스턴스
     private SearchDao searchDao; // 검색 DAO(Data Access Object) 인스턴스
+    private Users userInfo; // 사용자 정보 객체
 
-    // 생성자: 검색 뷰와 검색 DAO를 매개변수로 받아 초기화
-    public SearchController(SearchView searchView, SearchDao searchDao) {
+    // 생성자: 검색 뷰를 매개변수로 받아 초기화
+    public SearchController(SearchView searchView) {
         this.searchView = searchView;
-        this.searchDao = searchDao;
+        this.searchDao = SearchDao.getInstance(); // 여기서 SearchDao 인스턴스 초기화
+        this.userInfo = searchView.getUserInfo(); // SearchView에서 사용자 정보 가져오기
 
         // 검색 뷰의 버튼에 리스너 추가
         this.searchView.addHomeButtonListener(e -> goToHome());
@@ -30,9 +31,8 @@ public class SearchController {
 
     // 게시물 작성 페이지로 이동하는 메서드
     private void goToAddPost() {
-        Users userInfo = new Users(); // 새로운 사용자 정보 객체 생성
-        PostView postView = new PostView(userInfo, PostDao.getInstance()); // 게시물 뷰 인스턴스 생성
-        PostController postController = new PostController(); // 게시물 컨트롤러 인스턴스 생성
+        PostView postView = new PostView(userInfo); // 기존 사용자 정보 객체 사용
+        PostController postController = new PostController(postView, userInfo); // 사용자 정보 전달
         searchView.dispose(); // 현재 검색 뷰 닫기
         postView.setVisible(true); // 게시물 뷰 표시
     }
