@@ -9,17 +9,16 @@ public class Comments {
     private String userId;
     private String postId;
     private Date createDate;
+    private String userEmail;
 
-    public Comments(String id, String commentContent, String userId, String postId, Date createDate) {
+
+    public Comments(String id, String commentContent, String userId, String postId, Date createDate, String userEmail) {
         this.id = id;
         this.commentContent = commentContent;
         this.userId = userId;
         this.postId = postId;
         this.createDate = createDate;
-    }
-
-    public Comments(String commentContent) {
-        this.commentContent = commentContent;
+        this.userEmail = userEmail;
     }
 
     public Comments() {
@@ -44,6 +43,34 @@ public class Comments {
 
     public Date getCreateDate() {
         return createDate;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setCommentContent(String commentContent) {
+        this.commentContent = commentContent;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }
 

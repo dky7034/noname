@@ -128,7 +128,7 @@ public class MainView extends JFrame {
         commentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CommentView commentView = new CommentView(new CommentController()); // 댓글 보기 창 열기
+                CommentView commentView = new CommentView(post.getPostId()); // 댓글 보기 창 열기
                 commentView.setVisible(true);
             }
         });
@@ -216,7 +216,7 @@ public class MainView extends JFrame {
         bottomPanel.addUserButtonListener(listener); // 하단 패널에 사용자 버튼 리스너를 추가하는 메서드를 호출합니다.
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(Test::new); // Swing 애플리케이션을 Event Dispatch Thread에서 실행하여 MainView를 생성합니다.
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(Test::new); // Swing 애플리케이션을 Event Dispatch Thread에서 실행하여 MainView를 생성합니다.
+//    }
 }
