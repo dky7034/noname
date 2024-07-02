@@ -1,32 +1,36 @@
 package com.kostagram.controller;
 
-import com.kostagram.model.*;
+import com.kostagram.model.CommentDao;
+import com.kostagram.model.Comments;
+import com.kostagram.model.Users;
 import com.kostagram.view.CommentView;
 
 import java.util.List;
 
 public class CommentController {
+    private CommentView commentView;
     private CommentDao commentDao;
-    private Posts posts;
     private String postId;
     private Users user;
-    private CommentView view;
 
-    public CommentController( CommentView view, CommentDao commentDao, String postId, Users user) {
+    public CommentController(CommentView commentView, CommentDao commentDao, String postId, Users user) {
+        this.commentView = commentView;
         this.commentDao = commentDao;
-        this.view = view;
         this.postId = postId;
         this.user = user;
     }
 
     public List<Comments> getComments() {
-        return commentDao.getComments(postId);  // postId에 해당하는 댓글을 가져옵니다.
+        return commentDao.getCommentsByPostId(postId);
     }
 
     public void addComment(String content) {
-        Comments comment = new Comments(content);  // 생성자에 맞게 수정하세요.
+        Comments comment = new Comments();
+        comment.setUserId(user.getUserId());
+        comment.setUserEmail(user.getEmail());
+        comment.setCommentContent(content);
+        comment.setPostId(postId);
+        comment.setCreateDate(new java.util.Date());
         commentDao.addComment(comment);
-        view.addCommentPanel(comment);
     }
 }
-

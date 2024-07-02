@@ -21,18 +21,22 @@ public class CommentDao {
         return instance;
     }
 
-    public List<Comments> getComments(String postId) {
+    public List<Comments> getCommentsByPostId(String postId) {
         List<Comments> comments = new ArrayList<>();
-        try {
-            String query = "SELECT COMMENT_CONTENT, (SELECT USER_EMAIL FROM USERS u WHERE u.user_id = c.user_id) FROM comments c WHERE post_id = ?";
-            PreparedStatement pstmt = conn.prepareStatement(query);
+        String sql = "SELECT c.comment_content, c.create_date, substr(u.user_email,1,instr(u.USER_EMAIL,'@')-1) AS USER_EMAIL\n" +
+                "FROM comments c, users u Where c.user_id = u.user_id AND c.post_id = ?";
+
+        try (Connection conn = ConnectionProvider.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, postId);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Comments comment = new Comments(
-                        rs.getString("comment_content")
-                );
-                comments.add(comment);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Comments comment = new Comments();
+                    comment.setUserEmail(rs.getString("user_email"));
+                    comment.setCommentContent(rs.getString("comment_content"));
+                    comment.setCreateDate(rs.getTimestamp("create_date"));
+                    comments.add(comment);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
