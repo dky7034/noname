@@ -23,7 +23,14 @@ public class Posts {
         this.hashTag = hashTag;
         this.userName = userName;
     }
-
+    public Posts(String postId, String content, Date createDate, String userId, int likesCount, String userName) {
+        this.postId = postId;
+        this.postContent = content;
+        this.createDate = createDate;
+        this.userId = userId;
+        this.likesCount = likesCount;
+        this.userName = userName;
+    }
     public Posts(String postId, String content, Date createDate, String userId, int likesCount) {
         this.postId = postId;
         this.postContent = content;
