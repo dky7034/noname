@@ -59,7 +59,7 @@ public class MyPageView extends JFrame{
 
         userInfoPanel.setBackground(new Color(0,0,0));
         userInfoPanel.setLayout(new GridLayout(2,2));
-        userInfoPanel.setPreferredSize(new Dimension(450,100));
+        userInfoPanel.setPreferredSize(new Dimension(450,120));
         //User에 따른 total 포스트 개수
         JLabel totalPosts = new JLabel("Posts");
         JLabel intTP = new JLabel(String.valueOf(myPageDao.getTotalPostsByEmail(email)));
@@ -88,7 +88,7 @@ public class MyPageView extends JFrame{
         userInfoPanel.add(intTP);
         userInfoPanel.add(intTL);
 
-        
+
         // 메인 패널 설정 (메인 패널 안에 UserInfoPanel + Scrollpane(resultPanel)) 포함
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout()); // BorderLayout 사용
@@ -99,7 +99,7 @@ public class MyPageView extends JFrame{
 
         // 검색 결과 표시 패널 설정
         resultsPanel = new JPanel();
-        resultsPanel.setLayout(new GridLayout(0, 3, 20, 20)); // 3열 그리드 레이아웃, 간격 설정
+        resultsPanel.setLayout(new GridLayout(0, 3, 10, 10)); // 3열 그리드 레이아웃, 간격 설정
         resultsPanel.setBackground(Color.BLACK); // 결과 패널 배경 색상 설정
         //email로 post가져오기
         List<Posts> postsList = myPageDao.searchPostsByUserId(userInfo.getUserId());
@@ -160,7 +160,7 @@ public class MyPageView extends JFrame{
         postPanel.setLayout(new BorderLayout());
         postPanel.setBackground(Color.BLACK); // 패널 배경색 설정
         postPanel.setForeground(Color.WHITE);
-        postPanel.setPreferredSize(new Dimension(120, 120)); // 패널 크기 고정
+        postPanel.setPreferredSize(new Dimension(130, 130)); // 패널 크기 고정
         postPanel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 1)); // 테두리 설정
 
         JLabel postIdLabel = new JLabel(post.getUserName());
@@ -168,7 +168,9 @@ public class MyPageView extends JFrame{
         postIdLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
         postIdLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
-        JTextArea postContentArea = new JTextArea(post.getPostContent());
+        JTextArea postContentArea = new JTextArea();
+
+        postContentArea.append(post.getPostContent().substring(0,78));
         postContentArea.setEditable(false); // 편집 불가능하도록 설정
         postContentArea.setLineWrap(true); // 텍스트 영역이 행 넘침 시 자동 줄 바꿈 설정
         postContentArea.setWrapStyleWord(true); // 단어 단위로 줄 바꿈 설정
@@ -187,7 +189,7 @@ public class MyPageView extends JFrame{
 
         postPanel.add(postIdLabel, BorderLayout.NORTH);
         postPanel.add(scrollPane, BorderLayout.CENTER);
-        postPanel.setBorder(null);
+        postPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // 패널 클릭 시 상세 페이지로 이동하는 리스너 추가(중복됨)
 //        postPanel.addMouseListener(new java.awt.event.MouseAdapter() {

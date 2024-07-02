@@ -1,7 +1,7 @@
 package com.kostagram.view;
 
+import com.kostagram.controller.LoginController;
 import com.kostagram.controller.PostController;
-import com.kostagram.model.PostDao;
 import com.kostagram.model.Users;
 
 import javax.swing.*;
@@ -17,68 +17,73 @@ public class PostView extends JFrame {
     private PostController postController; // 게시물 컨트롤러
 
     // 생성자: 사용자 정보와 게시물 DAO를 매개변수로 받아 초기화
-    public PostView(Users userInfo, PostDao postDao) {
-        this.postController = new PostController(this, userInfo, postDao);
+    public PostView(Users userInfo) {
+        this.postController = new PostController(this, userInfo);
 
         // 프레임 설정
         setTitle("새 게시물 만들기");
-        setSize(475, 950); // 프레임 크기 설정
+        setSize(475, 650); // 프레임 크기 설정
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // 닫기 버튼 동작 설정
         setLocationRelativeTo(null); // 화면 중앙에 창 배치
         setResizable(false); // 창 크기 조절 불가
 
         // 메인 패널 설정
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(Color.BLACK);
-
-        // 우측 패널 설정
-        JPanel rightPanel = new JPanel();
-        rightPanel.setBackground(Color.BLACK);
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // 내용 입력 레이블 설정 및 추가
         JLabel contentLabel = new JLabel("내용 입력", JLabel.CENTER);
         styleLabel(contentLabel);
-        rightPanel.add(contentLabel);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        mainPanel.add(contentLabel, gbc);
 
         // 내용 입력 필드 설정 및 추가
         contentArea = new JTextArea(10, 30);
         contentArea.setWrapStyleWord(true); // 단어 단위로 줄바꿈 활성화
         contentArea.setLineWrap(true); // 텍스트 영역이 행 넘침 시 자동 줄 바꿈 설정
-        contentArea.setBorder(null);
         styleTextArea(contentArea);
         JScrollPane contentScrollPane = new JScrollPane(contentArea);
-        contentScrollPane.setBorder(null);
         contentScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         contentScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        rightPanel.add(contentScrollPane);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        mainPanel.add(contentScrollPane, gbc);
 
         // 해시태그 입력 레이블 설정 및 추가
         JLabel hashtagLabel = new JLabel("해시태그", JLabel.CENTER);
         styleLabel(hashtagLabel);
-        rightPanel.add(hashtagLabel);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        mainPanel.add(hashtagLabel, gbc);
 
         // 해시태그 입력 필드 설정 및 추가
         hashtagArea = new JTextArea(3, 25);
-        hashtagArea.setBorder(null);
         styleTextArea(hashtagArea);
         JScrollPane hashtagScrollPane = new JScrollPane(hashtagArea);
-        hashtagScrollPane.setBorder(null);
         hashtagScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         hashtagScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        rightPanel.add(hashtagScrollPane);
-        rightPanel.setBorder(null);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        mainPanel.add(hashtagScrollPane, gbc);
 
         // 게시 버튼 설정 및 추가
         JButton postButton = new JButton("게시");
         styleButton(postButton);
-        postButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         postButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String content = contentArea.getText(); // 내용 가져오기
                 String hashtags = hashtagArea.getText(); // 해시태그 가져오기
-                boolean isSuccess = postController.addPost(content, hashtags); // 게시물 추가 시도
+                boolean isSuccess = postController.addPost(content, hashtags, userInfo); // 게시물 추가 시도
                 if (isSuccess) {
                     JOptionPane.showMessageDialog(null, "게시글 작성 성공!\n내용: " + content + "\n해시태그: " + hashtags);
                     dispose(); // 창 닫기
@@ -87,11 +92,11 @@ public class PostView extends JFrame {
                 }
             }
         });
-        rightPanel.add(Box.createVerticalStrut(10)); // 간격 추가
-        rightPanel.add(postButton);
-
-        // 메인 패널에 우측 패널 추가
-        mainPanel.add(rightPanel, BorderLayout.CENTER);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        mainPanel.add(postButton, gbc);
 
         // 프레임에 메인 패널 추가
         add(mainPanel);
@@ -100,27 +105,33 @@ public class PostView extends JFrame {
 
     // 버튼 스타일 설정 메서드
     private void styleButton(JButton button) {
-        button.setBackground(Color.GRAY);
-        button.setForeground(Color.LIGHT_GRAY);
+        button.setBackground(Color.LIGHT_GRAY);
+        button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        button.setBorder(BorderFactory.createLineBorder(new Color(0x007BFF)));
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(new RoundedBorder(10)); // 둥근 테두리
+        button.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+        button.setPreferredSize(new Dimension(100, 40));
     }
 
     // 레이블 스타일 설정 메서드
     private void styleLabel(JLabel label) {
         label.setForeground(Color.LIGHT_GRAY);
-        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font("맑은 고딕", Font.BOLD, 16));
+        label.setBorder(BorderFactory.createEmptyBorder(10, 0, 5, 0));
     }
 
     // 텍스트 영역 스타일 설정 메서드
     private void styleTextArea(JTextArea textArea) {
-        textArea.setBackground(Color.DARK_GRAY);
-        textArea.setForeground(Color.LIGHT_GRAY);
-        textArea.setCaretColor(Color.LIGHT_GRAY);
-        textArea.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        textArea.setBackground(Color.LIGHT_GRAY); // 배경 색상
+        textArea.setForeground(Color.BLACK); // 글자 색상
+        textArea.setCaretColor(Color.BLACK); // 커서 색상
+        textArea.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        textArea.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
     }
 
     // 둥근 테두리를 위한 커스텀 Border 클래스
@@ -136,7 +147,7 @@ public class PostView extends JFrame {
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setColor(Color.LIGHT_GRAY); // 테두리 색상을 회색으로 설정
+            g2.setColor(new Color(0x007BFF)); // 테두리 색상을 변경
             g2.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
         }
 

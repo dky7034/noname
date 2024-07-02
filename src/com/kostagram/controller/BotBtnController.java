@@ -1,33 +1,33 @@
 package com.kostagram.controller;
 
-import com.kostagram.model.*;
+import com.kostagram.model.MyPageDao;
+import com.kostagram.model.PostDao;
+import com.kostagram.model.Posts;
+import com.kostagram.model.Users;
 import com.kostagram.view.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class MainController {
+public class BotBtnController {
     private MainView mainView;
     private Users userInfo;
-    private Posts post;
     private BottomPanel bottomPanel;
-
     // DAO 생성
     PostDao postDao = PostDao.getInstance();
     MyPageDao myPageDao = MyPageDao.getInstance();
-    CommentDao commentDao = CommentDao.getInstance();
 
-    public MainController(MainView mainView, Users userInfo) {
-        this.mainView = mainView;
+    public BotBtnController(BottomPanel bottomPanel, Users userInfo) {
+        this.bottomPanel = bottomPanel;
         this.userInfo = userInfo;
 
         loadPosts();
 
-        this.mainView.addHomeBtnListener(new HomeBtnListener());
-        this.mainView.addSearchBtnListener(new SearchBtnListener());
-        this.mainView.addAddBtnListener(new AddBtnListener());
-        this.mainView.addUserBtnListener(new UserBtnListener());
+        this.bottomPanel.addHomeButtonListener(new HomeBtnListener());
+        this.bottomPanel.addSearchButtonListener(new SearchBtnListener());
+        this.bottomPanel.addAddButtonListener(new AddBtnListener());
+        this.bottomPanel.addUserButtonListener(new UserBtnListener());
 
     }
 

@@ -30,6 +30,7 @@ public class CommentView extends JFrame {
         setTitle("Comment");
         setSize(450, 920);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null); // 프레임을 화면 중앙에 위치시킴
 
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(bgColor);
