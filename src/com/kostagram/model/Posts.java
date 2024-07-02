@@ -7,21 +7,29 @@ public class Posts {
     private String postContent;
     private Date createDate;
     private String userId;
-    private String hashTags;
+    private String hashTag;
     private String userName;
     private int likesCount;
-    private int commentsCount; // 댓글 수 필드 추가
+    private int commentsCount;
 
     public Posts() {}
 
-    public Posts(String postId, String postContent, Date createDate, String userId, int likesCount, String hashTags, String userName) {
+    public Posts(String postId, String postContent, Date createDate, String userId, int likesCount, String hashTag, String userName) {
         this.postId = postId;
         this.postContent = postContent;
         this.createDate = createDate;
         this.userId = userId;
         this.likesCount = likesCount;
-        this.hashTags = hashTags;
+        this.hashTag = hashTag;
         this.userName = userName;
+    }
+
+    public Posts(String postId, String content, Date createDate, String userId, int likesCount) {
+        this.postId = postId;
+        this.postContent = content;
+        this.createDate = createDate;
+        this.userId = userId;
+        this.likesCount = likesCount;
     }
 
     public String getUserName() {
@@ -42,11 +50,11 @@ public class Posts {
     }
 
     public String getHashTags() {
-        return hashTags;
+        return hashTag;
     }
 
-    public void setHashTags(String hashTags) {
-        this.hashTags = hashTags;
+    public void setHashTags(String hashTag) {
+        this.hashTag = hashTag;
     }
 
     // Getter and Setter for postContent
@@ -85,12 +93,9 @@ public class Posts {
         this.likesCount = likesCount;
     }
 
-    // Getter and Setter for commentsCount
-    public int getCommentsCount() {
-        return commentsCount;
-    }
+    // Getter and Setter for commentCount
+    public int getCommentsCount() { return commentsCount; }
 
-    public void setCommentsCount(int commentsCount) {
-        this.commentsCount = commentsCount;
-    }
+    public void setCommentsCount(int commentsCount) { this.commentsCount = commentsCount; }
+
 }

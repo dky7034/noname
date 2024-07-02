@@ -1,8 +1,6 @@
 package com.kostagram.controller;
 
 import com.kostagram.model.MyPageDao;
-import com.kostagram.model.PostDao;
-import com.kostagram.model.SearchDao;
 import com.kostagram.model.Users;
 import com.kostagram.view.MyPageView;
 import com.kostagram.view.PostView;
@@ -13,11 +11,11 @@ public class MyPageController {
     private MyPageDao myPageDao;
     private Users users;
 
-
-    public MyPageController(MyPageView myPageView, MyPageDao myPageDao) {
+    public MyPageController(MyPageView myPageView, MyPageDao myPageDao, Users users) {
         this.myPageView = myPageView;
         this.myPageDao = myPageDao;
-        this.users = myPageView.userInfo;
+        this.users = users;
+
         this.myPageView.addHomeButtonListener(e -> goToHome());
         this.myPageView.addSearchBtnListener(e -> goToSearch());
         this.myPageView.addAddButtonListener(e -> goToAddPost());
@@ -29,22 +27,20 @@ public class MyPageController {
     }
 
     private void goToAddPost() {
-        Users userInfo = new Users();
-        PostView postView = new PostView(userInfo, PostDao.getInstance());
-        PostController postController = new PostController();
+        PostView postView = new PostView(users); // 사용자 정보를 전달
+        PostController postController = new PostController(postView, users);
         myPageView.dispose();
         postView.setVisible(true);
     }
 
     private void goToSearch() {
-        // 현재 뷰를 다시 보이도록 설정
-        SearchView searchView = new SearchView(users);
-        SearchController searchController = new SearchController(searchView, SearchDao.getInstance());
+        SearchView searchView = new SearchView(users); // 사용자 정보를 전달
+        SearchController searchController = new SearchController(searchView);
         myPageView.dispose();
         searchView.setVisible(true);
     }
 
     private void goToUserPage() {
-        // 여기에 User Page로 이동하는 로직을 추가하세요
+        // User Page로 이동하는 로직을 추가하세요
     }
 }
