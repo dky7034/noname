@@ -38,6 +38,7 @@ public class SearchDao {
                 int likesCount = rs.getInt("LIKES_COUNT");
 
                 Posts post = new Posts(postId, content, createDate, userId, likesCount, userName);
+              
                 postsList.add(post);
             }
         } catch (SQLException e) {
@@ -45,4 +46,5 @@ public class SearchDao {
         }
         return postsList;
     }
+
 }
